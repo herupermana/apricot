@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 ?>
 
@@ -135,7 +137,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
   ?>
 
 
-<?php  if($npage==1){ ?>
+<?php  if ($npage == 1) { ?>
 
    <script src="<?php path_adm() ?>/flappy/js/phaser.min.js" type="text/javascript"></script>
    <script src="<?php path_adm() ?>/flappy/game/game.js" type="text/javascript"></script>
@@ -254,16 +256,16 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
 
-          <?php if($npage=="1"){ ?>
+          <?php if ($npage == '1') { ?>
 
 
 var pieData = [
 
 
-<?php 
+<?php
 
   foreach ($data['admin'] as $admin) {
-    echo "
+      echo "
         {
           value: '$admin[hasil]',
           label: '$admin[name_user]'
@@ -282,7 +284,7 @@ var pieData = [
 
 
 
-          <?php } if($npage=="2"){ ?>
+          <?php } if ($npage == '2') { ?>
           /*--Untuk update Main kategori--*/
           $(".tom-tambah").click(function(){
             if(!ajax_request){
@@ -558,7 +560,7 @@ var pieData = [
        
         
        
-         <?php  if($npage=="3"){ ?>
+         <?php  if ($npage == '3') { ?>
          /*From menambah user*/
 
         /* Untuk mencek inputan user*/
@@ -844,7 +846,7 @@ var pieData = [
           <?php  } //Akhir untuk form user baru
            ?> 
 
-          <?php  if($npage=="4"){ ?>
+          <?php  if ($npage == '4') { ?>
             $('#daftar-user').DataTable();
 
             $(document).on("click","table#daftar-user span.username",function(){
@@ -1342,11 +1344,11 @@ var pieData = [
              }
 
 
-            <?php  } 
+            <?php  }
            ?> 
 
-           <?php if($npage==5){ 
-           ?> 
+           <?php if ($npage == 5) {
+               ?> 
 
            $("#ganti-password-user").click(function(){
               var _this=$(this);
@@ -1408,8 +1410,9 @@ var pieData = [
            });
          
 
-           <?php } if($npage==6){
-            ?>
+           <?php
+           } if ($npage == 6) {
+               ?>
 
             $("#judul_artikel").on("keyup",function(){
               var s_url=getSlug($(this).val());
@@ -1423,12 +1426,11 @@ textEditor(".isi_artikel");
   variable2 berikut ini diperlukan untuk validasi form
   */
   <?php
-  if($artikel_tags!=false){
-    echo "var tag_terpilih= [$artikel_tags];";
+  if ($artikel_tags != false) {
+      echo "var tag_terpilih= [$artikel_tags];";
   } else {
-    echo "var tag_terpilih= [];";
-  }
-  ?>
+      echo 'var tag_terpilih= [];';
+  } ?>
 
   $('span.span-tag').each(function(index){
     var _1this=$(this);
@@ -1444,31 +1446,28 @@ textEditor(".isi_artikel");
   var uupload_in_progress=false;
 
 <?php
- if($artikel_sbg_headline==false){
-  //default harus true
-  echo "var headline=true;";
+ if ($artikel_sbg_headline == false) {
+     //default harus true
+     echo 'var headline=true;';
  } else {
-   $tF=($artikel_sbg_headline=="Y")?"true":"false";
-   echo "var headline=$tF;";
+     $tF = ($artikel_sbg_headline == 'Y') ? 'true' : 'false';
+     echo "var headline=$tF;";
  }
 
-if($artikel_editable==false){
-  echo "var editable=true;";
-} else {
-  $tG=($artikel_editable=="Y")?"true":"false";
-   echo "var editable=$tG;";
-}
+               if ($artikel_editable == false) {
+                   echo 'var editable=true;';
+               } else {
+                   $tG = ($artikel_editable == 'Y') ? 'true' : 'false';
+                   echo "var editable=$tG;";
+               }
 
-
-
-if($artikel_status==false){
-  echo "var aStatus=false;";
-} else if ($artikel_status=='publish') {
-  echo "var aStatus='publish';";
-} else if ($artikel_status=='draft') {
-  echo "var aStatus='draft';";
-}
-?>
+               if ($artikel_status == false) {
+                   echo 'var aStatus=false;';
+               } elseif ($artikel_status == 'publish') {
+                   echo "var aStatus='publish';";
+               } elseif ($artikel_status == 'draft') {
+                   echo "var aStatus='draft';";
+               } ?>
 
 
   var tags;
@@ -1493,11 +1492,11 @@ if($artikel_status==false){
 
   $(".area_count").html(tag_terpilih.length);
   
-          <?php if($artikel_id!=0){
-            echo "var inEdit=true, idE=$artikel_id;";
-          } else{
-            echo "var idE=0;";
-          } ?>
+          <?php if ($artikel_id != 0) {
+                   echo "var inEdit=true, idE=$artikel_id;";
+               } else {
+                   echo 'var idE=0;';
+               } ?>
 
 
           var j_foto_yaang_diupload=0;
@@ -1549,17 +1548,16 @@ if($artikel_status==false){
 
            foto_artikel.on("queuecomplete",function(){
             uupload_in_progress=false;
-             <?php if($artikel_id!=0){ ?>
+             <?php if ($artikel_id != 0) { ?>
               $(".dropzone").css("min-height","96px");
               $(".dz-message").css("display","block");
               <?php
-             }
-           ?>
+             } ?>
             console.log("Semua operasi selesai");
            });
 
-          <?php if($artikel_id!=0){
-          ?>
+          <?php if ($artikel_id != 0) {
+                 ?>
 
           foto_artikel.on("success",function(a,b){
            
@@ -1572,8 +1570,8 @@ if($artikel_status==false){
           });
 
           <?php
-          } else {
-            ?>
+             } else {
+                 ?>
 
 
         foto_artikel.on("success",function(a,b){
@@ -1582,7 +1580,7 @@ if($artikel_status==false){
              
             
             <?php
-          } ?>
+             } ?>
 
            (function($){
             var targ=$(".cek_headline");
@@ -2013,8 +2011,8 @@ if($artikel_status==false){
            }
            ?>
 
-             <?php if($npage==7){
-            ?>
+             <?php if ($npage == 7) {
+               ?>
              var art_table=$(".slug-table").DataTable({
               aaSorting:[]
              });
@@ -2057,12 +2055,12 @@ if($artikel_status==false){
              }
 
             <?php
-            } 
+           }
             ?>
 
 
-            <?php if($npage==8){
-            ?>
+            <?php if ($npage == 8) {
+                ?>
 
             $(".slug-table").DataTable();
 
@@ -2227,13 +2225,13 @@ if($artikel_status==false){
 
 
             <?php
-           }
+            }
            ?>
 
 
 
-            <?php if($npage==9){
-            ?>
+            <?php if ($npage == 9) {
+               ?>
 
              $(".media-table:first").DataTable({
               aaSorting:[2,'ASC']
@@ -2350,8 +2348,8 @@ if($artikel_status==false){
            }
            ?>
 
-            <?php if($npage==10){
-            ?>
+            <?php if ($npage == 10) {
+               ?>
             $("#accordion").collapse();
 
             direct_upload(".favicon-select-btn","#favicon");
@@ -2468,8 +2466,8 @@ if($artikel_status==false){
 
 
             <?php
-           } if ($npage==11){
-           ?>
+           } if ($npage == 11) {
+               ?>
 
           direct_upload(".bio-foto-btn","#foto-bio");
           textEditor("#deskripsi-editor");
@@ -2507,8 +2505,8 @@ if($artikel_status==false){
           <?php
            }
 
-           if($npage==12){
-           ?>           
+           if ($npage == 12) {
+               ?>           
             direct_upload(".btn-foto","#featured_image");
             textEditor("#isi_page");
             var customJS = CodeMirror.fromTextArea($("#js")[0],{mode:"javascript",lineNumbers:true,theme:"3024-day"});
@@ -2578,8 +2576,8 @@ if($artikel_status==false){
 
 
            <?php
-           } if($npage==13){
-           ?>
+           } if ($npage == 13) {
+               ?>
 
            $(".slug-table").DataTable();
 
@@ -2627,8 +2625,8 @@ if($artikel_status==false){
 
           <?php
            }
-           if($npage==14){
-           ?>
+           if ($npage == 14) {
+               ?>
 
            textEditor("#deskripsi-galeri");
 
@@ -2758,12 +2756,11 @@ if($artikel_status==false){
 
            foto_galeri.on("queuecomplete",function(){
             upload_galeri_in_progress=false;
-             <?php if($data['id']!=0){ ?>
+             <?php if ($data['id'] != 0) { ?>
               $(".dropzone").css("min-height","96px");
               $(".dz-message").css("display","block");
               <?php
-             }
-           ?>
+             } ?>
             console.log("Semua operasi selesai");
            });
 
@@ -2809,8 +2806,8 @@ if($artikel_status==false){
              }); 
 
 
-          <?php if($data['id']!=0){
-          ?>
+          <?php if ($data['id'] != 0) {
+                 ?>
 
           foto_galeri.on("success",function(a,b){
             $(".dz-success").remove();
@@ -2818,7 +2815,7 @@ if($artikel_status==false){
            var data_n=JSON.parse(b);
 
          //  var html="<div class='aPhotoThumb col-md-4 col-xs-4'><span class='label label-danger hapus_label'> menghapus... </span>  <button class='btn btn-warning btn-sm featured-tombol'>jadikan featured image</button><span class='glyphicon glyphicon-remove hapus_foto_artikel' id='"+data_n.id+"'></span><div class='hover_foto_artikel' ></div><img src='<?php echo base_url() ?>an-component/media/upload-gambar-artikel-thumbs/"+data_n.gambar+"'></div>";
-        var prepGambar='<?php echo base_url()."an-component/media/upload-galeri-thumbs/"; ?>'+data_n.gambar;
+        var prepGambar='<?php echo base_url().'an-component/media/upload-galeri-thumbs/'; ?>'+data_n.gambar;
 
       //   var elem=$("<div id='"+data_n.id+"' class='grid-item gallery-img-container'><img src='"+prepGambar+"'><span class='delete_btn_container'><span class='fa fa-times delete_btn'></span> <span class='fa fa-comment-o' data-toggle='popover' data-title='Deskripsi foto' data-placement='top' data-content='"+data_n.deskripsi+"'></span></span></div>");
 
@@ -2836,7 +2833,7 @@ if($artikel_status==false){
           });
 
           <?php
-          } ?>
+             } ?>
 
 
            $(document).on("click",".delete_btn",function(){
@@ -2886,8 +2883,8 @@ if($artikel_status==false){
 
 
           <?php
-           } if ($npage==15) {
-           ?>
+           } if ($npage == 15) {
+               ?>
 
            $(".slug-table").DataTable({
             aaSorting:[]
@@ -2929,8 +2926,8 @@ if($artikel_status==false){
            }
 
          <?php
-           } if ($npage==16){
-           ?>
+           } if ($npage == 16) {
+               ?>
 
            
            $(document).on("click",".show-edit-menu",function(){
@@ -3368,8 +3365,8 @@ if($artikel_status==false){
 
 
           <?php
-           } if ($npage==17){
-           ?>
+           } if ($npage == 17) {
+               ?>
 
 
            var table=$(".slug-table").DataTable({
@@ -3495,8 +3492,8 @@ if($artikel_status==false){
 
 
           <?php
-           }  if ($npage==18){
-           ?>
+           }  if ($npage == 18) {
+               ?>
 
            $(".btn-new-kategori").click(function(){
               $(".new-kategori").show().focus();
@@ -3668,8 +3665,8 @@ if($artikel_status==false){
           
 
           <?php
-           } if($npage==19){
-           ?>
+           } if ($npage == 19) {
+               ?>
 
            $(".btn-new-kategori").click(function(){
               $(".new-kategori").show().focus();
@@ -3890,8 +3887,8 @@ if($artikel_status==false){
 
 
          <?php
-           } if($npage==20){
-           ?>
+           } if ($npage == 20) {
+               ?>
 
 
             direct_upload(".pilih-banner","#gambar-banner");
@@ -4088,9 +4085,9 @@ if($artikel_status==false){
             }
 
            <?php
-           }  
-           if ($npage==21){
-           ?>
+           }
+           if ($npage == 21) {
+               ?>
 
            $(".tambah-berita").click(function(){
             var _this=$(this);
@@ -4259,8 +4256,8 @@ if($artikel_status==false){
 
 
            <?php
-           }   if ($npage==22){ 
-           ?>
+           }   if ($npage == 22) {
+               ?>
 
 
             var googleAnalitycs = CodeMirror.fromTextArea($("#google-analytics")[0],{mode:"javascript",lineNumbers:true,theme:"3024-day"});
@@ -4314,8 +4311,8 @@ if($artikel_status==false){
 
 
            <?php
-           }   if($npage==23){
-           ?>
+           }   if ($npage == 23) {
+               ?>
 
               $(".table-kontak").DataTable({
               aaSorting:[]
@@ -4401,8 +4398,8 @@ if($artikel_status==false){
               }
 
            <?php
-           } if($npage==24){
-           ?>
+           } if ($npage == 24) {
+               ?>
 
             $(".distribusikan").click(function(){
               _this=$(this);
@@ -4513,8 +4510,8 @@ if($artikel_status==false){
 
 
            <?php
-           }  if($npage==25){
-           ?>
+           }  if ($npage == 25) {
+               ?>
 
           $(".aktifkan-tema").click(function(){
             var _this=$(this);
@@ -4648,8 +4645,8 @@ if($artikel_status==false){
 
 
            <?php
-           } if($npage==26){
-           ?>
+           } if ($npage == 26) {
+               ?>
 
            direct_upload(".agenda-foto-btn","#agenda-foto");
            textEditor("#deskripsi-editor");
@@ -4721,8 +4718,8 @@ if($artikel_status==false){
 
 
            <?php
-           } if($npage==27){
-           ?>
+           } if ($npage == 27) {
+               ?>
 
             $("#table-agenda").dataTable({
               aaSorting:[]
@@ -4748,8 +4745,8 @@ if($artikel_status==false){
             });
 
            <?php
-           } if($npage==28){
-           ?>
+           } if ($npage == 28) {
+               ?>
 
             $(document).on("click",".hapus-download",function(){
 
@@ -4773,8 +4770,8 @@ if($artikel_status==false){
             });
 
            <?php
-           }  if($npage==29){
-           ?>
+           }  if ($npage == 29) {
+               ?>
 
             textEditor("#deskripsi-file");
             var file_download_terupload=false;
@@ -4904,20 +4901,19 @@ if($artikel_status==false){
 
         /*   file_download.on("queuecomplete",function(){
             uupload_in_progress=false;
-             <?php if($artikel_id!=0){ ?>
+             <?php if ($artikel_id != 0) { ?>
               $(".dropzone").css("min-height","96px");
               $(".dz-message").css("display","block");
               <?php
-             }
-           ?>
+             } ?>
             console.log("Semua operasi selesai");
            }); */
 
 
 
            <?php
-           }  if($npage==32){
-           ?>
+           }  if ($npage == 32) {
+               ?>
 
            $(".update-smtp").click(function(){
             var _this=$(this);
@@ -4970,8 +4966,8 @@ if($artikel_status==false){
 
 
            <?php
-           }  if($npage==33){
-           ?>
+           }  if ($npage == 33) {
+               ?>
 
            textEditor("#pesan-email");
 
@@ -5046,8 +5042,8 @@ if($artikel_status==false){
             });
 
            <?php
-           }  if($npage==34){
-           ?>
+           }  if ($npage == 34) {
+               ?>
 
             $(document).on("click",".hapus-faq",function(){
               var _this=$(this);
@@ -5080,8 +5076,8 @@ if($artikel_status==false){
 
 
            <?php
-           }  if($npage==35){
-           ?>
+           }  if ($npage == 35) {
+               ?>
             textEditor('#jawaban-faq');
             
             $('#submit-faq').click(function(){
@@ -5127,8 +5123,8 @@ if($artikel_status==false){
 
 
            <?php
-           }  if($npage==36){
-           ?>
+           }  if ($npage == 36) {
+               ?>
 
             $(document).on("click",".hapus-group-banner",function(){
               var _this= $(this);
@@ -5161,8 +5157,8 @@ if($artikel_status==false){
             });
 
            <?php
-           }  if($npage==37){
-           ?>
+           }  if ($npage == 37) {
+               ?>
 
              direct_upload(".btn-new-banner-field","#new-banner-field");
              direct_upload(".btn-edit-banner-field","#edit-banner-field");

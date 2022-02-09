@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 ?>
 
@@ -26,7 +28,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
               <div class="form-group">
                 <label for="nama-file">Nama File</label>
                 <input type="text" class="form-control" id="nama-file" value="<?php echo $file_nama ?>" />
-                <input type='hidden' id='sesi-form-upload' value='<?php echo rand(0,100).rand(10,500).date('dym') ?>' >
+                <input type='hidden' id='sesi-form-upload' value='<?php echo rand(0, 100).rand(10, 500).date('dym') ?>' >
                 <input type='hidden' id='id-file-download' value='<?php echo $file_id ?>' >
 
               </div>
@@ -36,7 +38,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
               <label>Upload file</label>
               <div class="dropzone well well-sm file_download">
               </div><br>
-            <?php if($file_id>0){ ?>
+            <?php if ($file_id > 0) { ?>
              File sekarang: <span class="label label-warning"><?php echo $file ?></span>
              <?php } ?>
             </div>

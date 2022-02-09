@@ -1,31 +1,30 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Menu extends CI_Model{
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
-	public $hasil;
-	public $namaMenu;
+class Menu extends CI_Model
+{
+    public $hasil;
+    public $namaMenu;
 
-	function __construct(){
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
-		parent::__construct();
+    public function sub_menu($id, $parent)
+    {
+        $query2 = $this->db->query("SELECT * FROM menu_child WHERE menu_id='$id' AND menu_child_parent='$parent' ORDER BY posisi ASC");
 
-	}
+        if ($query2->num_rows() > 0) {
+            foreach ($query2->result_array() as $data) {
+                $aktif = $data['aktif'] == 'N' ? "<span class='fa fa-exclamation-triangle menu-belum-active' data-toggle='tooltip' data-placement='top' title='menu belum aktif. Nanti akan aktif ketika tombol [update posisi] sudah di klik '></span>" : '';
 
+                $_target = ['_self', '_blank', '_parent', '_top'];
 
-	function sub_menu($id,$parent){
-
-		$query2=$this->db->query("SELECT * FROM menu_child WHERE menu_id='$id' AND menu_child_parent='$parent' ORDER BY posisi ASC");
-
-		if($query2->num_rows()>0){
-
-			foreach($query2->result_array() AS $data){
-
-					$aktif=$data['aktif']=="N"?"<span class='fa fa-exclamation-triangle menu-belum-active' data-toggle='tooltip' data-placement='top' title='menu belum aktif. Nanti akan aktif ketika tombol [update posisi] sudah di klik '></span>":"";
-
-					$_target=array("_self","_blank","_parent","_top");
-
-$this->hasil.=" <li id='$data[menu_child_id]' data-code='$data[menu_child_code]'> 
+                $this->hasil .= " <li id='$data[menu_child_id]' data-code='$data[menu_child_code]'> 
 
                   <div class='list-group-item-new' id='$data[menu_child_id]'> 
 
@@ -94,11 +93,11 @@ $this->hasil.=" <li id='$data[menu_child_id]' data-code='$data[menu_child_code]'
 		                    <div class='form-group'>
 		                      <label><small>Target link</small></label>
 		                        <select class='menu-target form-control'>";
-		                   		   foreach($_target AS $d){
-		                      		$select=$d==$data["menu_child_target"]?"selected":"";
-		                    		 $this->hasil.="<option value='$d' $select>$d</option>";
-		                      			}
-		                  		 $this->hasil.="</select>
+                foreach ($_target as $d) {
+                    $select = $d == $data['menu_child_target'] ? 'selected' : '';
+                    $this->hasil .= "<option value='$d' $select>$d</option>";
+                }
+                $this->hasil .= "</select>
 		                    </div>
 
 		                    <div class='form-group'>
@@ -112,38 +111,32 @@ $this->hasil.=" <li id='$data[menu_child_id]' data-code='$data[menu_child_code]'
 
 
                 <br> <ul class='sort' id='$data[menu_child_id]' > <span class='nbsp'> &nbsp; </span>";
-                $this->sub_menu($id,$data['menu_child_id']);
-                $this->hasil.=" </ul>  
-				 </li>";
+                $this->sub_menu($id, $data['menu_child_id']);
+                $this->hasil .= ' </ul>  
+				 </li>';
+            }
 
+            return;
+        }
+    }
 
-			}
+    public function get_menu($id = 0)
+    {
+        if ($id > 0) {
+            $query0 = $this->db->query("SELECT * FROM menu WHERE menu_id='$id'");
 
-			return;
-		}
+            if ($query0->num_rows() > 0) {
+                $d = $query0->row();
+                $this->namaMenu = $d->menu_nama;
 
-	}
+                $query = $this->db->query("SELECT * FROM menu_child WHERE menu_id='$id' AND menu_child_parent='0' ORDER BY posisi ASC");
 
+                foreach ($query->result_array() as $data) {
+                    $aktif = $data['aktif'] == 'N' ? "<span class='fa fa-exclamation-triangle menu-belum-active' data-toggle='tooltip' data-placement='top' title='menu belum aktif. Nanti akan aktif ketika tombol [update posisi] sudah di klik '></span>" : '';
 
+                    $_target = ['_self', '_blank', '_parent', '_top'];
 
-	function get_menu($id=0){
-		if($id>0){
-
-			$query0=$this->db->query("SELECT * FROM menu WHERE menu_id='$id'");
-
-			if($query0->num_rows()>0){
-				$d=$query0->row();
-				$this->namaMenu=$d->menu_nama;
-
-				$query=$this->db->query("SELECT * FROM menu_child WHERE menu_id='$id' AND menu_child_parent='0' ORDER BY posisi ASC");
-
-				foreach($query->result_array() AS $data){
-
-					$aktif=$data['aktif']=="N"?"<span class='fa fa-exclamation-triangle menu-belum-active' data-toggle='tooltip' data-placement='top' title='menu belum aktif. Nanti akan aktif ketika tombol [update posisi] sudah di klik '></span>":"";
-
-					$_target=array("_self","_blank","_parent","_top");
-
-$this->hasil.=" <li id='$data[menu_child_id]' data-code='$data[menu_child_code]'> 
+                    $this->hasil .= " <li id='$data[menu_child_id]' data-code='$data[menu_child_code]'> 
 
                   <div class='list-group-item-new' id='$data[menu_child_id]'> 
 
@@ -212,11 +205,11 @@ $this->hasil.=" <li id='$data[menu_child_id]' data-code='$data[menu_child_code]'
 		                    <div class='form-group'>
 		                      <label><small>Target link</small></label>
 		                        <select class='menu-target form-control'>";
-		                   		   foreach($_target AS $d){
-		                      		$select=$d==$data["menu_child_target"]?"selected":"";
-		                    		 $this->hasil.="<option value='$d' $select>$d</option>";
-		                      			}
-		                  		 $this->hasil.="</select>
+                    foreach ($_target as $d) {
+                        $select = $d == $data['menu_child_target'] ? 'selected' : '';
+                        $this->hasil .= "<option value='$d' $select>$d</option>";
+                    }
+                    $this->hasil .= "</select>
 		                    </div>
 
 		                    <div class='form-group'>
@@ -230,21 +223,17 @@ $this->hasil.=" <li id='$data[menu_child_id]' data-code='$data[menu_child_code]'
 
 
                 <br> <ul class='sort' id='$data[menu_child_id]' > <span class='nbsp'> &nbsp; </span>";
-                $this->sub_menu($id,$data['menu_child_id']);
-                $this->hasil.="  </ul>  
-				 </li>";
+                    $this->sub_menu($id, $data['menu_child_id']);
+                    $this->hasil .= '  </ul>  
+				 </li>';
+                }
 
- 			
-				}
-				return true;
-
-			} else {
-				return false;
-			}
-
-		} else {
-			return false;
-		}
-	}
-
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 }

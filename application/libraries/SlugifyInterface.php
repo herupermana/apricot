@@ -12,9 +12,8 @@
 namespace Cocur\Slugify;
 
 /**
- * SlugifyInterface
+ * SlugifyInterface.
  *
- * @package   org.cocur.slugify
  * @author    Florian Eckerstorfer <florian@eckerstorfer.co>
  * @author    Marchenko Alexandr
  * @copyright 2012-2014 Florian Eckerstorfer

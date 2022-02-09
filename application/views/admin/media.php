@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 ?>
 
      <!-- Content Wrapper. Contains page content -->
@@ -37,7 +37,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   </tr>
                 </thead>
                 <tbody>
-                  <?php 
+                  <?php
                    echo $daftar_foto;
                   ?>
                   
@@ -61,7 +61,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   </tr>
                 </thead>
                 <tbody>
-                  <?php 
+                  <?php
                   echo $hasil;
                   ?>
                 </tbody>

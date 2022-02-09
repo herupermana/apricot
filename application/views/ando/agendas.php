@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 ?>
 
 	<div class='col-md-12' id="header-page">
@@ -12,8 +12,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="konten">
 					<ul>
             <?php
-              foreach($agendas as $agenda){
-                echo "<li><a href=".agenda_url($agenda['id'],$agenda['slug']).">$agenda[judul]</a></li>";
+              foreach ($agendas as $agenda) {
+                  echo '<li><a href='.agenda_url($agenda['id'], $agenda['slug']).">$agenda[judul]</a></li>";
               }
             ?>
           </ul>					

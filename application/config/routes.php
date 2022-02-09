@@ -1,5 +1,6 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
@@ -51,85 +52,78 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['default_controller'] = 'home';
 $route['404_override'] = '';
-$route['translate_uri_dashes'] = FALSE;
+$route['translate_uri_dashes'] = false;
 
-$route['.+(welcome)']='$1';
+$route['.+(welcome)'] = '$1';
 
-$route['admin']='AN_admin';
-$route['admin/(.+)']='AN_admin/$1';
+$route['admin'] = 'AN_admin';
+$route['admin/(.+)'] = 'AN_admin/$1';
 
+$route['artikel'] = 'semua_artikel/semua';
+$route['artikel/(\d+)'] = 'semua_artikel/semua/$1';
 
+$route['artikel/(\d+)[-\w]+'] = 'semua_artikel/detail/$1';
 
+$route['article'] = 'semua_artikel/semua';
+$route['article/(\d+)'] = 'semua_artikel/semua/$1';
 
-$route['artikel']='semua_artikel/semua';
-$route['artikel/(\d+)']='semua_artikel/semua/$1';
+$route['article/(\d+)[-\w]+'] = 'semua_artikel/detail/$1';
 
-$route['artikel/(\d+)[-\w]+']='semua_artikel/detail/$1';
+$route['galeri'] = 'semua_galeri/semua';
+$route['galeri/(\d+)'] = 'semua_galeri/semua/$1';
 
-$route['article']='semua_artikel/semua';
-$route['article/(\d+)']='semua_artikel/semua/$1';
+$route['galeri/(\d+)[-\w]+'] = 'semua_galeri/detail/$1';
 
-$route['article/(\d+)[-\w]+']='semua_artikel/detail/$1';
+$route['blog'] = 'semua_artikel/semua';
+$route['blog/(\d+)'] = 'semua_artikel/semua/$1';
 
-$route['galeri']='semua_galeri/semua';
-$route['galeri/(\d+)']='semua_galeri/semua/$1';
+$route['blog/(\d+)[-\w]+'] = 'semua_artikel/detail/$1';
 
-$route['galeri/(\d+)[-\w]+']='semua_galeri/detail/$1';
+$route['faq/(\d+)[-\w]+$'] = 'faq/detail/$1';
 
-$route['blog']='semua_artikel/semua';
-$route['blog/(\d+)']='semua_artikel/semua/$1';
+$route['agenda/(\d+)[-\w]+$'] = 'agenda/detail/$1';
+$route['agenda'] = 'agendas/list_agenda/0';
+$route['agenda/(\d+)/?$'] = 'agendas/list_agenda/$1';
 
-$route['blog/(\d+)[-\w]+']='semua_artikel/detail/$1';
+$route['download/(\d+)[-\w]+$'] = 'download/detail/$1';
+$route['download'] = 'downloads/list_download/0';
+$route['download/(\d+)/?$'] = 'downloads/list_download/$1';
 
-$route['faq/(\d+)[-\w]+$']='faq/detail/$1';
+$route['kategori/(\d+)/?$'] = 'kategori_artikel/detail/$1';
+$route['kategori/(\d+)/(\d+)$'] = 'kategori_artikel/detail/$1/$2';
 
-$route['agenda/(\d+)[-\w]+$']='agenda/detail/$1';
-$route['agenda']='agendas/list_agenda/0';
-$route['agenda/(\d+)/?$']='agendas/list_agenda/$1';
+$route['kategori/(\d+)[-\w]+$'] = 'kategori_artikel/detail/$1';
+$route['kategori/(\d+)[-\w]+/(\d+)$'] = 'kategori_artikel/detail/$1/$2';
 
-$route['download/(\d+)[-\w]+$']='download/detail/$1';
-$route['download']='downloads/list_download/0';
-$route['download/(\d+)/?$']='downloads/list_download/$1';
+$route['category/(\d+)/?$'] = 'kategori_artikel/detail/$1';
+$route['category/(\d+)/(\d+)$'] = 'kategori_artikel/detail/$1/$2';
 
-$route['kategori/(\d+)/?$']='kategori_artikel/detail/$1';
-$route['kategori/(\d+)/(\d+)$']='kategori_artikel/detail/$1/$2';
+$route['category/(\d+)[-\w]+$'] = 'kategori_artikel/detail/$1';
+$route['category/(\d+)[-\w]+/(\d+)$'] = 'kategori_artikel/detail/$1/$2';
 
-$route['kategori/(\d+)[-\w]+$']='kategori_artikel/detail/$1';
-$route['kategori/(\d+)[-\w]+/(\d+)$']='kategori_artikel/detail/$1/$2';
+$route['kategori-galeri/(\d+)/?$'] = 'kategori_galeri/detail/$1';
+$route['kategori-galeri/(\d+)/(\d+)$'] = 'kategori_galeri/detail/$1/$2';
 
+$route['kategori-galeri/(\d+)[-\w]+$'] = 'kategori_galeri/detail/$1';
+$route['kategori-galeri/(\d+)[-\w]+/(\d+)$'] = 'kategori_galeri/detail/$1/$2';
 
-$route['category/(\d+)/?$']='kategori_artikel/detail/$1';
-$route['category/(\d+)/(\d+)$']='kategori_artikel/detail/$1/$2';
+$route['tag/(\d+)/?$'] = 'tags_artikel/detail/$1';
+$route['tag/(\d+)/(\d+)$'] = 'tags_artikel/detail/$1/$2';
 
-$route['category/(\d+)[-\w]+$']='kategori_artikel/detail/$1';
-$route['category/(\d+)[-\w]+/(\d+)$']='kategori_artikel/detail/$1/$2';
+$route['tag/(\d+)[-\w]+$'] = 'tags_artikel/detail/$1';
+$route['tag/(\d+)[-\w]+/(\d+)$'] = 'tags_artikel/detail/$1/$2';
 
+$route['label/(\d+)/?$'] = 'tags_artikel/detail/$1';
+$route['label/(\d+)/(\d+)$'] = 'tags_artikel/detail/$1/$2';
 
-$route['kategori-galeri/(\d+)/?$']='kategori_galeri/detail/$1';
-$route['kategori-galeri/(\d+)/(\d+)$']='kategori_galeri/detail/$1/$2';
+$route['label/(\d+)[-\w]+$'] = 'tags_artikel/detail/$1';
+$route['label/(\d+)[-\w]+/(\d+)$'] = 'tags_artikel/detail/$1/$2';
 
-$route['kategori-galeri/(\d+)[-\w]+$']='kategori_galeri/detail/$1';
-$route['kategori-galeri/(\d+)[-\w]+/(\d+)$']='kategori_galeri/detail/$1/$2';
+$route['page/(\d+)/?$'] = 'page/detail/$1';
+$route['page/(\d+)[-\w]+$'] = 'page/detail/$1';
 
-$route['tag/(\d+)/?$']='tags_artikel/detail/$1';
-$route['tag/(\d+)/(\d+)$']='tags_artikel/detail/$1/$2';
+$route['about-us'] = 'about_us';
+$route['tentang-kami'] = 'about_us';
 
-$route['tag/(\d+)[-\w]+$']='tags_artikel/detail/$1';
-$route['tag/(\d+)[-\w]+/(\d+)$']='tags_artikel/detail/$1/$2';
-
-
-$route['label/(\d+)/?$']='tags_artikel/detail/$1';
-$route['label/(\d+)/(\d+)$']='tags_artikel/detail/$1/$2';
-
-$route['label/(\d+)[-\w]+$']='tags_artikel/detail/$1';
-$route['label/(\d+)[-\w]+/(\d+)$']='tags_artikel/detail/$1/$2';
-
-$route['page/(\d+)/?$']='page/detail/$1';
-$route['page/(\d+)[-\w]+$']='page/detail/$1';
-
-
-$route["about-us"]="about_us";
-$route["tentang-kami"]="about_us";
-
-$route["syarat-dan-ketentuan"]="syarat_ketentuan";
-$route["terms-and-conditions"]="syarat_ketentuan";
+$route['syarat-dan-ketentuan'] = 'syarat_ketentuan';
+$route['terms-and-conditions'] = 'syarat_ketentuan';

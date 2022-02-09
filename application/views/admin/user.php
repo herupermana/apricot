@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 ?>
  <!-- Content Wrapper. Contains page content -->
@@ -27,7 +29,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
           		<div class='row'>
           			<div class='col-md-6 col-xs-12'>
           				<form class='form-user-baru' id='love'>
-                    <input type='hidden' class='sesi-from' value='<?php echo rand(0,100).rand(10,500).date('dym') ?>' >
+                    <input type='hidden' class='sesi-from' value='<?php echo rand(0, 100).rand(10, 500).date('dym') ?>' >
           					<div class='form-group'>
           						<label for='username'>Username</label> <span class='label label-danger'></span>
                       <div class='input-group has-feedback'><span class="input-group-addon" id="username"><i class='fa fa-user'></i></span>

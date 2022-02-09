@@ -12,9 +12,8 @@
 //namespace Cocur\Slugify;
 
 /**
- * Slugify
+ * Slugify.
  *
- * @package   org.cocur.slugify
  * @author    Florian Eckerstorfer <florian@eckerstorfer.co>
  * @author    Ivo Bathke <ivo.bathke@gmail.com>
  * @author    Marchenko Alexandr
@@ -26,7 +25,7 @@ class Slugify
     const LOWERCASE_NUMBERS_DASHES = '/([^a-z0-9]|-)+/';
 
     /** @var array */
-    protected $rules = array(
+    protected $rules = [
         // Numeric characters
         '¹' => 1,
         '²' => 2,
@@ -652,12 +651,12 @@ class Slugify
         'ဉ်'    => 'in',
         'ံ'     => 'an',
         'ိံ'    => 'ein',
-        'ုံ'    => 'on'
-    );
+        'ုံ'    => 'on',
+    ];
 
     /** @var array<string,string>[] */
-    protected $rulesets = array(
-        'esperanto' => array(
+    protected $rulesets = [
+        'esperanto' => [
             'ĉ' => 'cx',
             'ĝ' => 'gx',
             'ĥ' => 'hx',
@@ -669,15 +668,14 @@ class Slugify
             'Ĥ' => 'HX',
             'Ĵ' => 'JX',
             'Ŝ' => 'SX',
-            'Ŭ' => 'UX'
-        )
-    );
+            'Ŭ' => 'UX',
+        ],
+    ];
 
     /** @var string */
     protected $regExp;
 
     /**
-     *
      * @param string $regExp
      */
     public function __construct($regExp = self::LOWERCASE_NUMBERS_DASHES)
@@ -738,9 +736,9 @@ class Slugify
      *
      * @param string $name Name of the ruleset.
      *
-     * @return Slugify
-     *
      * @throws \InvalidArgumentException if the no ruleset with the given name exists
+     *
+     * @return Slugify
      */
     public function activateRuleset($name)
     {
@@ -777,7 +775,7 @@ class Slugify
     }
 
     /**
-     * Sets the regular expression used to sanitize the slug
+     * Sets the regular expression used to sanitize the slug.
      *
      * @param string $regExp
      *

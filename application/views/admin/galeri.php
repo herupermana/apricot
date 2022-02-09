@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 ?>
 
@@ -26,7 +28,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
               <div class="form-group"> 
                 <label for="nama-galeri">Nama</label>
                 <input type="text" class="form-control" id="nama-galeri" value="<?php echo "$data[nama]" ?>" />
-                <input type='hidden' class='sesi-from_galeri' value='<?php echo rand(0,100).rand(10,500).date('dym') ?>' >
+                <input type='hidden' class='sesi-from_galeri' value='<?php echo rand(0, 100).rand(10, 500).date('dym') ?>' >
                 <input type='hidden' class='id_galeri' value='<?php echo $data['id'] ?>' >
             
               </div>
@@ -54,11 +56,10 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
 
-              <?php 
+              <?php
 
-               if($foto!==false){
-               
-              ?>
+               if ($foto !== false) {
+                   ?>
 
               <div class="form-group">
                 <div class="row">
@@ -66,11 +67,11 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
                   <div class="col-md-12">
                     <div class="well grid galeri_area" >
               
-                  <?php 
-                  foreach ($foto AS $gmb){
-                    echo "<div id='$gmb[id_foto]' class='grid-item gallery-img-container'>
+                  <?php
+                  foreach ($foto as $gmb) {
+                      echo "<div id='$gmb[id_foto]' class='grid-item gallery-img-container'>
 
-                    <img src='".base_url()."an-component/media/upload-galeri-thumbs/".$gmb['nama_foto']."'>
+                    <img src='".base_url().'an-component/media/upload-galeri-thumbs/'.$gmb['nama_foto']."'>
 
 
 
@@ -106,15 +107,14 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
                     </div>";
-                  }
-                  ?>
+                  } ?>
                   </div>
                  </div>
                 </div>
                </div>
 
               <?php
-                }
+               }
               ?>
 
 
@@ -123,11 +123,11 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
               <label for="galeri-status">Publish</label>
               <select id="galeri-status" class="form-control">
 
-                <?php 
-                $pilihan=array("publish","draft");
+                <?php
+                $pilihan = ['publish', 'draft'];
                 foreach ($pilihan as $value) {
-                  $selected=($value == $data['status'])?"selected":"";
-                  echo "<option value='$value' $selected>$value</option>";
+                    $selected = ($value == $data['status']) ? 'selected' : '';
+                    echo "<option value='$value' $selected>$value</option>";
                 }
                 ?>
 
@@ -139,13 +139,12 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
                 <label for="galeri-kategori">Kategori</label>
                 <select id="galeri-kategori" class="form-control">
                   <option value="0">Pilih Kategori</option>
-                  <?php 
+                  <?php
 
                     foreach ($kategori as  $kat) {
-                      $selc=($kat['id']==$data['kategori'])?'selected':'';
-                      echo "<option value='$kat[id]' $selc>$kat[nama_kategori]</option>";
-
-                           }                  
+                        $selc = ($kat['id'] == $data['kategori']) ? 'selected' : '';
+                        echo "<option value='$kat[id]' $selc>$kat[nama_kategori]</option>";
+                    }
 
                   ?>
 

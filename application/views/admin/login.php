@@ -1,6 +1,6 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-$path_adm=base_url()."an-theme/admin";
+defined('BASEPATH') or exit('No direct script access allowed');
+$path_adm = base_url().'an-theme/admin';
 
 ?>
 
@@ -34,13 +34,13 @@ $path_adm=base_url()."an-theme/admin";
       </div><!-- /.login-logo -->
       <div class="login-box-body">
         <p class="login-box-msg">Silahkan Login</p>
-        <?php 
-        if($status==1){
-          ?>
+        <?php
+        if ($status == 1) {
+            ?>
           <div class="alert alert-danger" role="alert">
  <span class='glyphicon glyphicon-alert'></span> Username atau password salah!
 </div>
-          <?php 
+          <?php
         }
         ?>
         <form action="<?php echo base_url() ?>admin/proseslogin" method="POST">

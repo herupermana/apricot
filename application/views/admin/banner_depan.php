@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 ?>
 
@@ -91,32 +93,32 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 					<?php
 
-					foreach ($hasil as  $value) {
-						echo "<tr data-id='$value[id]'>";
+                    foreach ($hasil as  $value) {
+                        echo "<tr data-id='$value[id]'>";
 
-						echo "<td>";
-						echo "<span class='banner-header-name editable-span' data-id='$value[id]' >$value[header]</span>";
-						echo "<input type='text' data-id='$value[id]' value='$value[header]' class='form-control banner-header-field sembunyi' />";
-						echo "</td>";
+                        echo '<td>';
+                        echo "<span class='banner-header-name editable-span' data-id='$value[id]' >$value[header]</span>";
+                        echo "<input type='text' data-id='$value[id]' value='$value[header]' class='form-control banner-header-field sembunyi' />";
+                        echo '</td>';
 
-						echo "<td>";
-						echo "<span class='banner-caption-name editable-span' data-id='$value[id]'>$value[caption]</span>";
-						echo "<input type='text'  data-id='$value[id]' value='$value[caption]' class='form-control banner-caption-field sembunyi' />";
-						echo "</td>";
+                        echo '<td>';
+                        echo "<span class='banner-caption-name editable-span' data-id='$value[id]'>$value[caption]</span>";
+                        echo "<input type='text'  data-id='$value[id]' value='$value[caption]' class='form-control banner-caption-field sembunyi' />";
+                        echo '</td>';
 
-						echo "<td>";
-						echo "<span class='banner-link-name editable-span' data-id='$value[id]'>$value[link_href]</span>";
-						echo "<input type='text' data-id='$value[id]' value='$value[link_href]' class='form-control banner-link-field sembunyi' />";
-						echo "</td>";
+                        echo '<td>';
+                        echo "<span class='banner-link-name editable-span' data-id='$value[id]'>$value[link_href]</span>";
+                        echo "<input type='text' data-id='$value[id]' value='$value[link_href]' class='form-control banner-link-field sembunyi' />";
+                        echo '</td>';
 
-						echo "<td>";
-						echo "<span class='banner-link-text-name editable-span' data-id='$value[id]'>$value[link_text] </span>";
-						echo "<input type='text' data-id='$value[id]' value='$value[link_text]' class='form-control banner-link-text-field sembunyi' />";
-						echo "</td>";
+                        echo '<td>';
+                        echo "<span class='banner-link-text-name editable-span' data-id='$value[id]'>$value[link_text] </span>";
+                        echo "<input type='text' data-id='$value[id]' value='$value[link_text]' class='form-control banner-link-text-field sembunyi' />";
+                        echo '</td>';
 
-						echo "<td>";
-						echo "<span class='banner-gambar-name editable-span' data-id='$value[id]'>$value[gambar] </span>";
-						echo "
+                        echo '<td>';
+                        echo "<span class='banner-gambar-name editable-span' data-id='$value[id]'>$value[gambar] </span>";
+                        echo "
 						<div class='wrap-group sembunyi' data-id='$value[id]'>
 						<div class='input-group'>
 						<input type='text' data-id='$value[id]' value='$value[gambar]' class='form-control banner-gambar-field' id='target-field-gambar-$value[id]' data-toggle='tooltip' data-placement='top' title='tekan ENTER untuk menyimpan' />
@@ -124,16 +126,16 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 						</div>
 						</div>
 						";
-						echo "</td>";
+                        echo '</td>';
 
-					    echo "<td>";
-					    echo "<i class='fa hapus-banner fa-close hapus-icon' data-id='$value[id]'></i>";
-						echo "</td>";
-						
-						echo "</tr>";
-					}
+                        echo '<td>';
+                        echo "<i class='fa hapus-banner fa-close hapus-icon' data-id='$value[id]'></i>";
+                        echo '</td>';
 
-					 ?>
+                        echo '</tr>';
+                    }
+
+                     ?>
 
 					</tbody>
 

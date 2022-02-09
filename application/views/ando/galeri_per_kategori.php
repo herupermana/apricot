@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 ?>
 
 	<div class='col-md-12' id="header-page">
@@ -9,25 +9,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div class='col-md-8 left-side'>
 
 			
-<?php 
+<?php
 
 foreach ($semua_galeri as $galeri) {
-  echo "<div class='artikel'>";
+    echo "<div class='artikel'>";
 
-  echo "<div class='konten'>";
-  echo "<a href='".galeri_url($galeri['id'],$galeri['slug'])."'><h2 class='judul'>$galeri[nama]</h2></a>";
-  echo "</div>";
+    echo "<div class='konten'>";
+    echo "<a href='".galeri_url($galeri['id'], $galeri['slug'])."'><h2 class='judul'>$galeri[nama]</h2></a>";
+    echo '</div>';
 
-  echo "<img class='img-responsive' src='".img_galeri_url($galeri['foto'])."' alt='$galeri[nama]' />";
+    echo "<img class='img-responsive' src='".img_galeri_url($galeri['foto'])."' alt='$galeri[nama]' />";
 
-  echo "<div class='konten'>";
+    echo "<div class='konten'>";
 
-	echo "<a class='' href='".galeri_url($galeri['id'],$galeri['slug'])."'><button style='float:none' class='btn btn-info btn-effect'>Lihat Galeri</button></a>";
+    echo "<a class='' href='".galeri_url($galeri['id'], $galeri['slug'])."'><button style='float:none' class='btn btn-info btn-effect'>Lihat Galeri</button></a>";
 
-	echo "</div>";
+    echo '</div>';
 
-	echo "</div>";
-
+    echo '</div>';
 }
 
  ?>					

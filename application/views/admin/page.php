@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 ?>
 
@@ -40,7 +42,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
               <div class="form-group">
                 <label for="isi_page">Isi Page</label>
-                <textarea class="form-control" id="isi_page"><?php echo $data['isi'];?></textarea>
+                <textarea class="form-control" id="isi_page"><?php echo $data['isi']; ?></textarea>
               </div>
 
               <div class="form-group">
@@ -68,10 +70,10 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
                 <label for="status_page">Status</label>
                 <select class="form-control" id="status_page">
                   <?php
-                  $nilai=array("published","draft");
+                  $nilai = ['published', 'draft'];
                   foreach ($nilai as  $value) {
-                    $select=$value==$data["status"]?"selected":"";
-                    echo "<option value='$value' $select>$value</option>";
+                      $select = $value == $data['status'] ? 'selected' : '';
+                      echo "<option value='$value' $select>$value</option>";
                   }
                    ?>
                 </select>
@@ -79,7 +81,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
               <div class="form-group">
                 <label for="js">Custom Javascript</label>
-                <textarea class="form-control" id="js"><?php echo $data['javascript'];?></textarea>
+                <textarea class="form-control" id="js"><?php echo $data['javascript']; ?></textarea>
               </div>
 
               

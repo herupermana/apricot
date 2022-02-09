@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 ?>
 
 
@@ -13,15 +13,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		<div class="artikel">
 
-			<?php if($page["foto"]!=""){
-				echo "<img class='img-responsive' alt='$page[judul]' src='$page[foto]' />";
-			} 
-			?>
+			<?php if ($page['foto'] != '') {
+    echo "<img class='img-responsive' alt='$page[judul]' src='$page[foto]' />";
+}
+            ?>
 
 			
 		 <div class='konten'>
 			<div class="isi">
-				<?php echo reversequote($page['isi'],'all'); ?>
+				<?php echo reversequote($page['isi'], 'all'); ?>
 			</div>
 
 		 </div>

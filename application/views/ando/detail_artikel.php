@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 ?>
 
 
@@ -15,27 +15,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<meta itemscope itemprop="mainEntityOfPage" itemid="<?php echo current_url(); ?>" >
 
 	<div class='konten'>
-		<?php 
+		<?php
 
-			echo "<h1 itemprop='headline' class='judul'>$artikel[judul]</h1>";
+            echo "<h1 itemprop='headline' class='judul'>$artikel[judul]</h1>";
 
-			 ?>
+             ?>
 
 		<div class='info'>
-			<meta itemprop="dateModified" content="<?php 
+			<meta itemprop="dateModified" content="<?php
 
-			if($artikel['tanggal_edit']=='0000-00-00 00:00:00'){
-				echo cuma_tanggal($artikel['tanggal']);
-			} else {
-				echo cuma_tanggal($artikel['tanggal_edit']);
+            if ($artikel['tanggal_edit'] == '0000-00-00 00:00:00') {
+                echo cuma_tanggal($artikel['tanggal']);
+            } else {
+                echo cuma_tanggal($artikel['tanggal_edit']);
+            }
 
-			}
+             ?>"/>
+			<?php
 
-			 ?>"/>
-			<?php 
-
-
-			echo "<span  itemprop='datePublished' content='".cuma_tanggal($artikel['tanggal'])."' class='tanggal'> <i class='fa fa-calendar'></i>&nbsp; ".format_tanggal($artikel['tanggal'])."</span>  
+            echo "<span  itemprop='datePublished' content='".cuma_tanggal($artikel['tanggal'])."' class='tanggal'> <i class='fa fa-calendar'></i>&nbsp; ".format_tanggal($artikel['tanggal'])."</span>  
 
 			<i class='fa fa-user'></i>&nbsp; 
 
@@ -45,12 +43,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			<span class='dibaca'> <i class='fa fa-eye'></i>&nbsp; Dibaca $artikel[dibaca] kali </span>";
 
+                foreach (ambil_tag($artikel['tags']) as  $tag) {
+                    echo "<span class=''><a href='".tag_url($tag['id_tag'], $tag['slug_tag'])."' style='color:#000;'><i class='fa fa-tags'></i> $tag[nama_tag]</a></span>";
+                }
 
-				foreach (ambil_tag($artikel['tags']) as  $tag) {
-					 echo "<span class=''><a href='".tag_url($tag['id_tag'],$tag['slug_tag'])."' style='color:#000;'><i class='fa fa-tags'></i> $tag[nama_tag]</a></span>";
-				}
-
-			 ?>
+             ?>
 		</div>
 		</div>
 
@@ -78,9 +75,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		<div  itemprop="articleBody" class="isi">
 
-			<?php 
-			echo set_tag(reversequote($artikel['isi'],'all'));
-			 ?>
+			<?php
+            echo set_tag(reversequote($artikel['isi'], 'all'));
+             ?>
 
 		</div>
 
@@ -90,13 +87,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div class="related_artikel" style="width: 100%; height: auto">
 			<h4>Baca Juga</h4>
 				<ul itemscope itemtype="http://schema.org/WebPage">
-			<?php 
+			<?php
 
-			foreach ($artikel_related_per_kategori as $related) {
-				echo "<li><a itemprop='relatedLink' title='$related[judul]' href='".artikel_url($related['id'],$related['slug'])."' >$related[judul]</a></li>";
-			}
+            foreach ($artikel_related_per_kategori as $related) {
+                echo "<li><a itemprop='relatedLink' title='$related[judul]' href='".artikel_url($related['id'], $related['slug'])."' >$related[judul]</a></li>";
+            }
 
-			 ?>
+             ?>
 				</ul>
 		</div>
 
@@ -122,7 +119,7 @@ this.page.identifier = "<?php echo $informasi['uniqueid'] ?>"; // Replace PAGE_I
 (function() { // DON'T EDIT BELOW THIS LINE
 var d = document, s = d.createElement('script');
 
-s.src = '//<?php echo $disqus["unique_name"] ?>.disqus.com/embed.js';
+s.src = '//<?php echo $disqus['unique_name'] ?>.disqus.com/embed.js';
 
 s.setAttribute('data-timestamp', +new Date());
 (d.head || d.body).appendChild(s);

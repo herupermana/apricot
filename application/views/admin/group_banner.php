@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 ?>
 
@@ -36,9 +38,9 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
               <tbody>
                 <?php
-                $no=1;
-                foreach($groups as $banner){
-                  echo "<tr>
+                $no = 1;
+                foreach ($groups as $banner) {
+                    echo "<tr>
                     <td>$no</td>
                     <td>$banner[nama]</td>
                     <td>group_banner($banner[id_group])</td>
@@ -48,7 +50,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
                     </td>
                   </tr>";
                 }
-                
+
                 ?>
               </tbody>
             </table>

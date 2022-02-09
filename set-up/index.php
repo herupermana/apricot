@@ -1,31 +1,30 @@
 <!doctype html>
-<?php 
+<?php
 
 function siteURL()
 {
-    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? 'https://' : 'http://';
     $domainName = $_SERVER['HTTP_HOST'].'/';
+
     return $protocol.$domainName;
 }
 
+$dir = $_SERVER['REQUEST_URI'];
+$dir = trim($dir, '/');
+$dir = explode('/', $dir);
 
-$dir=$_SERVER['REQUEST_URI'];
-$dir=trim($dir,"/");
-$dir=explode("/", $dir);
-
-$hasil="";
-if(($j=count($dir))>2){
-	for ($i=0; $i <= $j-2 ; $i++) { 
-		$hasil.=$dir[$i].'/';
-	}
-} else if(count($dir)>1) {
-	$hasil=$dir[0];
-
-} else if(count($dir)==1){
-	$hasil="";
+$hasil = '';
+if (($j = count($dir)) > 2) {
+    for ($i = 0; $i <= $j - 2; $i++) {
+        $hasil .= $dir[$i].'/';
+    }
+} elseif (count($dir) > 1) {
+    $hasil = $dir[0];
+} elseif (count($dir) == 1) {
+    $hasil = '';
 }
 
-$dir=trim($hasil,"/");
+$dir = trim($hasil, '/');
 
  ?>
 

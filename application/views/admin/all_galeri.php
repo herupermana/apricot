@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 ?>
 
 
@@ -37,8 +39,8 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 						<tbody>
 							<?php
-							echo $galeri;
-							?>
+                            echo $galeri;
+                            ?>
 						</tbody>
 					</table>
 

@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 ?>
 
@@ -36,7 +38,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
                   <tbody>
                     <?php
                   foreach ($agendas as $agenda) {
-                    echo "<tr>
+                      echo "<tr>
                     <td>$agenda[judul]</td>
                     <td>$agenda[tanggal_mulai]</td>
                     <td>$agenda[tanggal_selesai]</td>

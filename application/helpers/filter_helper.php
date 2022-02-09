@@ -1,76 +1,89 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
 
-function filter($data){
-	return $data;
+defined('BASEPATH') or exit('No direct script access allowed');
+
+function filter($data)
+{
+    return $data;
 }
 
-function filterquote($data,$quote="single"){
+function filterquote($data, $quote = 'single')
+{
+    switch ($quote) {
+        case 'single':
+            $data = str_replace("'", '&singlequote;', $data);
 
-	switch ($quote) {
-		case "single":
-			$data=str_replace("'", "&singlequote;",$data);
-			return $data;
-		break;
+            return $data;
+        break;
 
-		case "double":
-			$data=str_replace('"', '&quot;',$data);
-			return $data;		
-		break;
+        case 'double':
+            $data = str_replace('"', '&quot;', $data);
 
-		case "back":
-			$data=str_replace("`", "&backquote;",$data);
-			return $data;			
-		break;
+            return $data;
+        break;
 
-		case "all":
-			$data=str_replace(array("'",'"',"`"),array("&singlequote;","&doublequote;","&backquote;"),$data);
-			return $data;
-		break;
-		
-		default:
-			$data=str_replace("'", "&singlequote;",$data);
-			return $data;
-		break;
-	}
+        case 'back':
+            $data = str_replace('`', '&backquote;', $data);
 
-	$data=str_replace($data, "'", "&singlequote;");
-	return $data;
+            return $data;
+        break;
+
+        case 'all':
+            $data = str_replace(["'", '"', '`'], ['&singlequote;', '&doublequote;', '&backquote;'], $data);
+
+            return $data;
+        break;
+
+        default:
+            $data = str_replace("'", '&singlequote;', $data);
+
+            return $data;
+        break;
+    }
+
+    $data = str_replace($data, "'", '&singlequote;');
+
+    return $data;
 }
 
-function reversequote($data,$quote="single"){
+function reversequote($data, $quote = 'single')
+{
+    switch ($quote) {
+        case 'single':
+            $data = str_replace('&singlequote;', "'", $data);
 
-	switch ($quote) {
-		case "single":
-			$data=str_replace("&singlequote;","'",$data);
-			return $data;
-		break;
+            return $data;
+        break;
 
-		case "double":
-			$data=str_replace('&doublequote;','"',$data);
-			return $data;		
-		break;
+        case 'double':
+            $data = str_replace('&doublequote;', '"', $data);
 
-		case "back":
-			$data=str_replace("&backquote;","`",$data);
-			return $data;			
-		break;
+            return $data;
+        break;
 
-		case "all":
-			$data=str_replace(array("&singlequote;","&doublequote;","&backquote;"),array("'",'"',"`"),$data);
-			return $data;
-		break;
-		
-		default:
-			$data=str_replace("&singlequote;","'",$data);
-			return $data;
-		break;
-	}
+        case 'back':
+            $data = str_replace('&backquote;', '`', $data);
 
+            return $data;
+        break;
+
+        case 'all':
+            $data = str_replace(['&singlequote;', '&doublequote;', '&backquote;'], ["'", '"', '`'], $data);
+
+            return $data;
+        break;
+
+        default:
+            $data = str_replace('&singlequote;', "'", $data);
+
+            return $data;
+        break;
+    }
 }
 
-function changequote($data){
-	$data=str_replace(array("'",'"',"\\","<",">"),array("’","”","\\\\","&lt;","&gt;"),$data);
+function changequote($data)
+{
+    $data = str_replace(["'", '"', '\\', '<', '>'], ['’', '”', '\\\\', '&lt;', '&gt;'], $data);
 
-	return $data; 
+    return $data;
 }

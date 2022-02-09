@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 ?>
 
@@ -35,7 +37,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
                   <tbody>
                     <?php
                   foreach ($download as $dw) {
-                    echo "<tr>
+                      echo "<tr>
                     <td>$dw[nama_file]</td>
                     <td>$dw[file]</td>
                     <td><a class='btn btn-info btn-xs'  href='".base_url('admin/download/'.$dw['id'])."'>Edit</a> <button class='btn btn-danger btn-xs hapus-download' data-id='$dw[id]' >Hapus</button></td>

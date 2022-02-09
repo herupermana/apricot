@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 ?>
 
@@ -43,7 +45,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
                 <strong>Dear <?php echo $pesan['nama'] ?></strong>
                 <br><br><br><br><br><hr>
                 <blockquote>
-                 <?php 
+                 <?php
                   echo "<i>Pada $pesan[tanggal] $pesan[nama] menulis: </i>";
                   ?>
                   <br>

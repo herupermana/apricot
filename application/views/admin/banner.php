@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 ?>
 
@@ -103,8 +105,8 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
                     </thead>
                     <tbody class="body-table">
                       <?php
-                        foreach($item_banner as $item){
-                          echo "
+                        foreach ($item_banner as $item) {
+                            echo "
                             <tr class='item-row' data-id='$item[id]'>
                               <td class='gambar'>$item[gambar]</td>
                               <td class='header'>$item[header]</td>

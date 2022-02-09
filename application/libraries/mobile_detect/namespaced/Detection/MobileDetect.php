@@ -8,7 +8,7 @@
  *  - Classname:       MobileDetect
  *  - Namespased:      \Detection\MobileDetect
  *  - Autoload path:   ./namespaced
- *  - Converted path:  ./namespaced/Detection/MobileDetect.php
+ *  - Converted path:  ./namespaced/Detection/MobileDetect.php.
  *
  * Don't forget to use MobileDetect (instead of Mobile_Detect) as class in code when autoloading.
  *
@@ -17,6 +17,9 @@
  */
 
 namespace Detection;
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Mobile_Detect.php';
 
-class MobileDetect extends \Mobile_Detect {}
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Mobile_Detect.php';
+
+class MobileDetect extends \Mobile_Detect
+{
+}

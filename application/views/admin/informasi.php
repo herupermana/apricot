@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 ?>
 
@@ -49,12 +51,12 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
                               <select id="sleep_mode" class="form-control">
 
-                                <?php 
+                                <?php
 
-                                  $sleep=array("N"=>"Tidak","Y"=>"Ya");
+                                  $sleep = ['N'=>'Tidak', 'Y'=>'Ya'];
                                   foreach ($sleep as $key => $value) {
-                                    $sel=($key==$data["sleep_mode"])?"selected":"";
-                                   echo "<option value='$key' $sel >$value</option>";
+                                      $sel = ($key == $data['sleep_mode']) ? 'selected' : '';
+                                      echo "<option value='$key' $sel >$value</option>";
                                   }
 
                                 ?>
@@ -89,11 +91,11 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
                        <div class="form-group">
                         <select class="form-control" id="prefix-sbg">
                           <?php
-                          $option_p=array('prefix'=>'Prefix', 'suffix'=>'Suffix', 'none'=>'Kosongkan');
+                          $option_p = ['prefix'=>'Prefix', 'suffix'=>'Suffix', 'none'=>'Kosongkan'];
                           foreach ($option_p as $k => $value) {
-                            $select=$k==$data['prefix_suffix_sebagai']?'selected':'';
+                              $select = $k == $data['prefix_suffix_sebagai'] ? 'selected' : '';
 
-                            echo "<option value='$k' $select >$value</option> ";
+                              echo "<option value='$k' $select >$value</option> ";
                           }
 
                            ?>

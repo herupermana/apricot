@@ -2,260 +2,250 @@
 
 include_once '../../../../ex_support.php'; //edited (added)
 
-$CI =& get_instance(); //edited (added)
-
-
+$CI = &get_instance(); //edited (added)
 
 $config = include 'config/config.php';
 //TODO switch to array
 extract($config, EXTR_OVERWRITE);
 
-if (USE_ACCESS_KEYS == TRUE){
-	if (!isset($_GET['akey'], $access_keys) || empty($access_keys)){
-		die('Access Denied!');
-	}
+if (USE_ACCESS_KEYS == true) {
+    if (!isset($_GET['akey'], $access_keys) || empty($access_keys)) {
+        exit('Access Denied!');
+    }
 
-	$_GET['akey'] = strip_tags(preg_replace( "/[^a-zA-Z0-9\._-]/", '', $_GET['akey']));
+    $_GET['akey'] = strip_tags(preg_replace("/[^a-zA-Z0-9\._-]/", '', $_GET['akey']));
 
-	if (!in_array($_GET['akey'], $access_keys)){
-		die('Access Denied!');
-	}
+    if (!in_array($_GET['akey'], $access_keys)) {
+        exit('Access Denied!');
+    }
 }
 
-$_SESSION['RF']["verify"] = "RESPONSIVEfilemanager";
+$_SESSION['RF']['verify'] = 'RESPONSIVEfilemanager';
 
-if(isset($_POST['submit'])){
+if (isset($_POST['submit'])) {
+    include 'upload.php';
+} else {
+    include 'include/utils.php';
 
-	include 'upload.php';
-
-}
-else {
-include 'include/utils.php';
-
-if (isset($_GET['fldr'])
+    if (isset($_GET['fldr'])
     && !empty($_GET['fldr'])
-    && strpos($_GET['fldr'],'../') === FALSE
-    && strpos($_GET['fldr'],'./') === FALSE)
-{
-    $subdir = urldecode(trim(strip_tags($_GET['fldr']),"/") ."/");
-    $_SESSION['RF']["filter"]='';
-}
-else { $subdir = ''; }
-
-if($subdir == "")
-{
-   if(!empty($_COOKIE['last_position'])
-	&& strpos($_COOKIE['last_position'],'.') === FALSE)
-	$subdir= trim($_COOKIE['last_position']);
-}
-//remember last position
-setcookie('last_position',$subdir,time() + (86400 * 7));
-
-if ($subdir == "/") { $subdir = ""; }
-
-// If hidden folders are specified
-if(count($hidden_folders)){
-	// If hidden folder appears in the path specified in URL parameter "fldr"
-	$dirs = explode('/', $subdir);
-	foreach($dirs as $dir){
-		if($dir !== '' && in_array($dir, $hidden_folders)){
-			// Ignore the path
-			$subdir = "";
-			break;
-		}
-	}
-}
-
-/***
- *SUB-DIR CODE
- ***/
-
-if (!isset($_SESSION['RF']["subfolder"]))
-{
-	$_SESSION['RF']["subfolder"] = '';
-}
-$rfm_subfolder = '';
-
-if (!empty($_SESSION['RF']["subfolder"]) && strpos($_SESSION['RF']["subfolder"],'../') === FALSE
-   && strpos($_SESSION['RF']["subfolder"],'./') === FALSE && strpos($_SESSION['RF']["subfolder"],"/") !== 0
-   && strpos($_SESSION['RF']["subfolder"],'.') === FALSE)
-{
-	$rfm_subfolder = $_SESSION['RF']['subfolder'];
-}
-
-if ($rfm_subfolder != "" && $rfm_subfolder[strlen($rfm_subfolder)-1] != "/") { $rfm_subfolder .= "/"; }
-
-if (!file_exists($current_path.$rfm_subfolder.$subdir))
-{
-    $subdir = '';
-    if (!file_exists($current_path.$rfm_subfolder.$subdir))
-    {
-		$rfm_subfolder = "";
-    }
-}
-
-if (trim($rfm_subfolder) == "")
-{
-    $cur_dir 	 = $upload_dir . $subdir;
-    $cur_path 	 = $current_path . $subdir;
-    $thumbs_path = $thumbs_base_path;
-    $parent 	 = $subdir;
-}
-else
-{
-    $cur_dir 	 = $upload_dir . $rfm_subfolder.$subdir;
-    $cur_path 	 = $current_path . $rfm_subfolder.$subdir;
-    $thumbs_path = $thumbs_base_path. $rfm_subfolder;
-    $parent 	 = $rfm_subfolder.$subdir;
-}
-
-$cycle = TRUE;
-$max_cycles = 50;
-$i = 0;
-while($cycle && $i < $max_cycles){
-    $i++;
-    if ($parent=="./") $parent="";
-
-    if (file_exists($current_path.$parent."config.php"))
-    {
-		require_once $current_path.$parent."config.php";
-		$cycle = FALSE;
+    && strpos($_GET['fldr'], '../') === false
+    && strpos($_GET['fldr'], './') === false) {
+        $subdir = urldecode(trim(strip_tags($_GET['fldr']), '/').'/');
+        $_SESSION['RF']['filter'] = '';
+    } else {
+        $subdir = '';
     }
 
-    if ($parent == "") $cycle = FALSE;
-    else $parent = fix_dirname($parent)."/";
-}
+    if ($subdir == '') {
+        if (!empty($_COOKIE['last_position'])
+    && strpos($_COOKIE['last_position'], '.') === false) {
+            $subdir = trim($_COOKIE['last_position']);
+        }
+    }
+    //remember last position
+    setcookie('last_position', $subdir, time() + (86400 * 7));
 
-if (!is_dir($thumbs_path.$subdir))
-{
-    create_folder(FALSE, $thumbs_path.$subdir);
-}
+    if ($subdir == '/') {
+        $subdir = '';
+    }
 
-if (isset($_GET['popup']))
-{
-	$popup = strip_tags($_GET['popup']);
-}
-else $popup=0;
-//Sanitize popup
-$popup=!!$popup;
+    // If hidden folders are specified
+    if (count($hidden_folders)) {
+        // If hidden folder appears in the path specified in URL parameter "fldr"
+        $dirs = explode('/', $subdir);
+        foreach ($dirs as $dir) {
+            if ($dir !== '' && in_array($dir, $hidden_folders)) {
+                // Ignore the path
+                $subdir = '';
+                break;
+            }
+        }
+    }
 
-if (isset($_GET['crossdomain']))
-{
-   $crossdomain = strip_tags($_GET['crossdomain']);
-}
-else $crossdomain=0;
+    /***
+     *SUB-DIR CODE
+     ***/
 
-//Sanitize crossdomain
-$crossdomain=!!$crossdomain;
+    if (!isset($_SESSION['RF']['subfolder'])) {
+        $_SESSION['RF']['subfolder'] = '';
+    }
+    $rfm_subfolder = '';
 
-//view type
-if(!isset($_SESSION['RF']["view_type"]))
-{
-	$view = $default_view;
-	$_SESSION['RF']["view_type"] = $view;
-}
+    if (!empty($_SESSION['RF']['subfolder']) && strpos($_SESSION['RF']['subfolder'], '../') === false
+   && strpos($_SESSION['RF']['subfolder'], './') === false && strpos($_SESSION['RF']['subfolder'], '/') !== 0
+   && strpos($_SESSION['RF']['subfolder'], '.') === false) {
+        $rfm_subfolder = $_SESSION['RF']['subfolder'];
+    }
 
-if (isset($_GET['view']))
-{
-	$view = fix_get_params($_GET['view']);
-	$_SESSION['RF']["view_type"] = $view;
-}
+    if ($rfm_subfolder != '' && $rfm_subfolder[strlen($rfm_subfolder) - 1] != '/') {
+        $rfm_subfolder .= '/';
+    }
 
-$view = $_SESSION['RF']["view_type"];
+    if (!file_exists($current_path.$rfm_subfolder.$subdir)) {
+        $subdir = '';
+        if (!file_exists($current_path.$rfm_subfolder.$subdir)) {
+            $rfm_subfolder = '';
+        }
+    }
 
-//filter
-$filter = "";
-if(isset($_SESSION['RF']["filter"]))
-{
-	$filter = $_SESSION['RF']["filter"];
-}
+    if (trim($rfm_subfolder) == '') {
+        $cur_dir = $upload_dir.$subdir;
+        $cur_path = $current_path.$subdir;
+        $thumbs_path = $thumbs_base_path;
+        $parent = $subdir;
+    } else {
+        $cur_dir = $upload_dir.$rfm_subfolder.$subdir;
+        $cur_path = $current_path.$rfm_subfolder.$subdir;
+        $thumbs_path = $thumbs_base_path.$rfm_subfolder;
+        $parent = $rfm_subfolder.$subdir;
+    }
 
-if(isset($_GET["filter"]))
-{
-	$filter = fix_get_params($_GET["filter"]);
-}
+    $cycle = true;
+    $max_cycles = 50;
+    $i = 0;
+    while ($cycle && $i < $max_cycles) {
+        $i++;
+        if ($parent == './') {
+            $parent = '';
+        }
 
-if (!isset($_SESSION['RF']['sort_by']))
-{
-	$_SESSION['RF']['sort_by'] = 'name';
-}
+        if (file_exists($current_path.$parent.'config.php')) {
+            require_once $current_path.$parent.'config.php';
+            $cycle = false;
+        }
 
-if (isset($_GET["sort_by"]))
-{
-	$sort_by = $_SESSION['RF']['sort_by'] = fix_get_params($_GET["sort_by"]);
-}
-else $sort_by = $_SESSION['RF']['sort_by'];
+        if ($parent == '') {
+            $cycle = false;
+        } else {
+            $parent = fix_dirname($parent).'/';
+        }
+    }
 
+    if (!is_dir($thumbs_path.$subdir)) {
+        create_folder(false, $thumbs_path.$subdir);
+    }
 
-if (!isset($_SESSION['RF']['descending']))
-{
-	$_SESSION['RF']['descending'] = TRUE;
-}
+    if (isset($_GET['popup'])) {
+        $popup = strip_tags($_GET['popup']);
+    } else {
+        $popup = 0;
+    }
+    //Sanitize popup
+    $popup = (bool) $popup;
 
-if (isset($_GET["descending"]))
-{
-	$descending = $_SESSION['RF']['descending'] = fix_get_params($_GET["descending"])==1;
-}
-else{
-	$descending = $_SESSION['RF']['descending'];	
-} 
+    if (isset($_GET['crossdomain'])) {
+        $crossdomain = strip_tags($_GET['crossdomain']);
+    } else {
+        $crossdomain = 0;
+    }
 
-$boolarray = Array(false => 'false', true => 'true');
+    //Sanitize crossdomain
+    $crossdomain = (bool) $crossdomain;
 
-$return_relative_url = isset($_GET['relative_url']) && $_GET['relative_url'] == "1" ? true : false;
+    //view type
+    if (!isset($_SESSION['RF']['view_type'])) {
+        $view = $default_view;
+        $_SESSION['RF']['view_type'] = $view;
+    }
 
-if (!isset($_GET['type'])) $_GET['type'] = 0;
+    if (isset($_GET['view'])) {
+        $view = fix_get_params($_GET['view']);
+        $_SESSION['RF']['view_type'] = $view;
+    }
 
+    $view = $_SESSION['RF']['view_type'];
 
-if (isset($_GET['lang']))
-{
-	$lang = strip_tags($_GET['lang']);
-	$_SESSION['RF']['language'] = $lang;
-	$_SESSION['RF']['language_file'] = 'lang/' . $lang . '.php';
-}
+    //filter
+    $filter = '';
+    if (isset($_SESSION['RF']['filter'])) {
+        $filter = $_SESSION['RF']['filter'];
+    }
 
-if (isset($_GET['editor']))
-{
-	$editor = strip_tags($_GET['editor']);
-}
-else{
-	if($_GET['type']==0){
-		$editor=false;
-	}else{
-		$editor='tinymce';
-	}
-}
+    if (isset($_GET['filter'])) {
+        $filter = fix_get_params($_GET['filter']);
+    }
 
-if (!isset($_GET['field_id'])) $_GET['field_id'] = '';
+    if (!isset($_SESSION['RF']['sort_by'])) {
+        $_SESSION['RF']['sort_by'] = 'name';
+    }
 
-$field_id = isset($_GET['field_id']) ? fix_get_params($_GET['field_id']) : '';
-$type_param = fix_get_params($_GET['type']);
+    if (isset($_GET['sort_by'])) {
+        $sort_by = $_SESSION['RF']['sort_by'] = fix_get_params($_GET['sort_by']);
+    } else {
+        $sort_by = $_SESSION['RF']['sort_by'];
+    }
 
-if ($type_param==1) 	 $apply = 'apply_img';
-elseif($type_param==2) $apply = 'apply_link';
-elseif($type_param==0 && $_GET['field_id']=='') $apply = 'apply_none';
-elseif($type_param==3) $apply = 'apply_video';
-else $apply = 'apply';
+    if (!isset($_SESSION['RF']['descending'])) {
+        $_SESSION['RF']['descending'] = true;
+    }
 
-$get_params = array(
-    'editor'    => $editor,
-    'type'      => $type_param,
-    'lang'      => $lang,
-    'popup'     => $popup,
-    'crossdomain' => $crossdomain,
-    'field_id'  => $field_id,
-    'relative_url' => $return_relative_url,
-    'akey' 		=> (isset($_GET['akey']) && $_GET['akey'] != '' ? $_GET['akey'] : 'key')
-);
-if(isset($_GET['CKEditorFuncNum'])){
-    $get_params['CKEditorFuncNum'] = $_GET['CKEditorFuncNum'];
-    $get_params['CKEditor'] = (isset($_GET['CKEditor'])? $_GET['CKEditor'] : '');
-}
-$get_params['fldr'] ='';
+    if (isset($_GET['descending'])) {
+        $descending = $_SESSION['RF']['descending'] = fix_get_params($_GET['descending']) == 1;
+    } else {
+        $descending = $_SESSION['RF']['descending'];
+    }
 
-$get_params = http_build_query($get_params);
+    $boolarray = [false => 'false', true => 'true'];
 
-?>
+    $return_relative_url = isset($_GET['relative_url']) && $_GET['relative_url'] == '1' ? true : false;
+
+    if (!isset($_GET['type'])) {
+        $_GET['type'] = 0;
+    }
+
+    if (isset($_GET['lang'])) {
+        $lang = strip_tags($_GET['lang']);
+        $_SESSION['RF']['language'] = $lang;
+        $_SESSION['RF']['language_file'] = 'lang/'.$lang.'.php';
+    }
+
+    if (isset($_GET['editor'])) {
+        $editor = strip_tags($_GET['editor']);
+    } else {
+        if ($_GET['type'] == 0) {
+            $editor = false;
+        } else {
+            $editor = 'tinymce';
+        }
+    }
+
+    if (!isset($_GET['field_id'])) {
+        $_GET['field_id'] = '';
+    }
+
+    $field_id = isset($_GET['field_id']) ? fix_get_params($_GET['field_id']) : '';
+    $type_param = fix_get_params($_GET['type']);
+
+    if ($type_param == 1) {
+        $apply = 'apply_img';
+    } elseif ($type_param == 2) {
+        $apply = 'apply_link';
+    } elseif ($type_param == 0 && $_GET['field_id'] == '') {
+        $apply = 'apply_none';
+    } elseif ($type_param == 3) {
+        $apply = 'apply_video';
+    } else {
+        $apply = 'apply';
+    }
+
+    $get_params = [
+        'editor'       => $editor,
+        'type'         => $type_param,
+        'lang'         => $lang,
+        'popup'        => $popup,
+        'crossdomain'  => $crossdomain,
+        'field_id'     => $field_id,
+        'relative_url' => $return_relative_url,
+        'akey' 		      => (isset($_GET['akey']) && $_GET['akey'] != '' ? $_GET['akey'] : 'key'),
+    ];
+    if (isset($_GET['CKEditorFuncNum'])) {
+        $get_params['CKEditorFuncNum'] = $_GET['CKEditorFuncNum'];
+        $get_params['CKEditor'] = (isset($_GET['CKEditor']) ? $_GET['CKEditor'] : '');
+    }
+    $get_params['fldr'] = '';
+
+    $get_params = http_build_query($get_params); ?>
 <!DOCTYPE html>
 <html xmlns="https://www.w3.org/1999/xhtml">
 	<head>
@@ -277,12 +267,13 @@ $get_params = http_build_query($get_params);
 	<script src="js/jPlayer/jquery.jplayer/jquery.jplayer.js"></script>
 	<script src="js/modernizr.custom.js"></script>
 	<?php
-	if ($aviary_active){
-	if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) { ?>
+    if ($aviary_active) {
+        if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) { ?>
 	    <script src="https://dme0ih8comzn4.cloudfront.net/imaging/v2/editor.js"></script>
-	<?php }else{ ?>
+	<?php } else { ?>
 	    <script src="http://feather.aviary.com/imaging/v2/editor.js"></script>
-	<?php }} ?>
+	<?php }
+    } ?>
 
 	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
@@ -292,16 +283,16 @@ $get_params = http_build_query($get_params);
 	<script>
 	    var ext_img=new Array('<?php echo implode("','", $ext_img)?>');
 	    var allowed_ext=new Array('<?php echo implode("','", $ext)?>');
-	    var image_editor=<?php echo $aviary_active?"true":"false"; ?>;
+	    var image_editor=<?php echo $aviary_active ? 'true' : 'false'; ?>;
 	    //dropzone config
 	    Dropzone.options.rfmDropzone = {
-		    dictInvalidFileType: "<?php echo trans('Error_extension');?>",
+		    dictInvalidFileType: "<?php echo trans('Error_extension'); ?>",
 		    dictFileTooBig: "<?php echo trans('Error_Upload'); ?>",
 		    dictResponseError: "SERVER ERROR",
 		    paramName: "file", // The name that will be used to transfer the file
 		    maxFilesize: <?php echo $MaxSizeUpload; ?>, // MB
 		    url: "upload.php",
-		    <?php if($apply!="apply_none"){ ?>
+		    <?php if ($apply != 'apply_none') { ?>
 		    init: function() {
 			    this.on("success", function(file,res) { 
 			    	file.previewElement.addEventListener("click", function() {
@@ -317,16 +308,16 @@ $get_params = http_build_query($get_params);
 					done();
 			    }
 			    else {
-			    	done("<?php echo trans('Error_extension');?>");
+			    	done("<?php echo trans('Error_extension'); ?>");
 				}
 		    }
 	    };
 	    if (image_editor) {
 	    var featherEditor = new Aviary.Feather({
 		<?php
-	        foreach ($aviary_defaults_config as $aopt_key => $aopt_val) {
-	        	echo $aopt_key.": ".json_encode($aopt_val).",";
-			} ?>
+            foreach ($aviary_defaults_config as $aopt_key => $aopt_val) {
+                echo $aopt_key.': '.json_encode($aopt_val).',';
+            } ?>
 			onReady: function() {
 		        hide_animation();
 		    },
@@ -377,20 +368,32 @@ $get_params = http_build_query($get_params);
 	<input type="hidden" id="cancel" value="<?php echo trans('Cancel'); ?>" />
 	<input type="hidden" id="rename" value="<?php echo trans('Rename'); ?>" />
 	<input type="hidden" id="lang_duplicate" value="<?php echo trans('Duplicate'); ?>" />
-	<input type="hidden" id="duplicate" value="<?php if($duplicate_files) echo 1; else echo 0; ?>" />
+	<input type="hidden" id="duplicate" value="<?php if ($duplicate_files) {
+                echo 1;
+            } else {
+                echo 0;
+            } ?>" />
 	<input type="hidden" id="base_url" value="<?php echo $base_url?>"/>
 	<input type="hidden" id="base_url_true" value="<?php echo base_url(); ?>"/>
 	<input type="hidden" id="fldr_value" value="<?php echo $subdir; ?>"/>
 	<input type="hidden" id="sub_folder" value="<?php echo $rfm_subfolder; ?>"/>
-	<input type="hidden" id="return_relative_url" value="<?php echo $return_relative_url == true ? 1 : 0;?>"/>
+	<input type="hidden" id="return_relative_url" value="<?php echo $return_relative_url == true ? 1 : 0; ?>"/>
 	<input type="hidden" id="lazy_loading_file_number_threshold" value="<?php echo $lazy_loading_file_number_threshold?>"/>
 	<input type="hidden" id="file_number_limit_js" value="<?php echo $file_number_limit_js; ?>" />
 	<input type="hidden" id="sort_by" value="<?php echo $sort_by; ?>" />
-	<input type="hidden" id="descending" value="<?php echo $descending?1:0; ?>" />
-	<input type="hidden" id="current_url" value="<?php echo str_replace(array('&filter='.$filter,'&sort_by='.$sort_by,'&descending='.intval($descending)),array(''),$base_url.$_SERVER['REQUEST_URI']); ?>" />
+	<input type="hidden" id="descending" value="<?php echo $descending ? 1 : 0; ?>" />
+	<input type="hidden" id="current_url" value="<?php echo str_replace(['&filter='.$filter, '&sort_by='.$sort_by, '&descending='.intval($descending)], [''], $base_url.$_SERVER['REQUEST_URI']); ?>" />
 	<input type="hidden" id="lang_show_url" value="<?php echo trans('Show_url'); ?>" />
-	<input type="hidden" id="copy_cut_files_allowed" value="<?php if($copy_cut_files) echo 1; else echo 0; ?>" />
-	<input type="hidden" id="copy_cut_dirs_allowed" value="<?php if($copy_cut_dirs) echo 1; else echo 0; ?>" />
+	<input type="hidden" id="copy_cut_files_allowed" value="<?php if ($copy_cut_files) {
+                echo 1;
+            } else {
+                echo 0;
+            } ?>" />
+	<input type="hidden" id="copy_cut_dirs_allowed" value="<?php if ($copy_cut_dirs) {
+                echo 1;
+            } else {
+                echo 0;
+            } ?>" />
 	<input type="hidden" id="copy_cut_max_size" value="<?php echo $copy_cut_max_size; ?>" />
 	<input type="hidden" id="copy_cut_max_count" value="<?php echo $copy_cut_max_count; ?>" />
 	<input type="hidden" id="lang_copy" value="<?php echo trans('Copy'); ?>" />
@@ -401,13 +404,25 @@ $get_params = http_build_query($get_params);
 	<input type="hidden" id="lang_files" value="<?php echo trans('Files'); ?>" />
 	<input type="hidden" id="lang_folders" value="<?php echo trans('Folders'); ?>" />
 	<input type="hidden" id="lang_files_on_clipboard" value="<?php echo trans('Files_ON_Clipboard'); ?>" />
-	<input type="hidden" id="clipboard" value="<?php echo ((isset($_SESSION['RF']['clipboard']['path']) && trim($_SESSION['RF']['clipboard']['path']) != null) ? 1 : 0); ?>" />
+	<input type="hidden" id="clipboard" value="<?php echo (isset($_SESSION['RF']['clipboard']['path']) && trim($_SESSION['RF']['clipboard']['path']) != null) ? 1 : 0; ?>" />
 	<input type="hidden" id="lang_clear_clipboard_confirm" value="<?php echo trans('Clear_Clipboard_Confirm'); ?>" />
 	<input type="hidden" id="lang_file_permission" value="<?php echo trans('File_Permission'); ?>" />
-	<input type="hidden" id="chmod_files_allowed" value="<?php if($chmod_files) echo 1; else echo 0; ?>" />
-	<input type="hidden" id="chmod_dirs_allowed" value="<?php if($chmod_dirs) echo 1; else echo 0; ?>" />
+	<input type="hidden" id="chmod_files_allowed" value="<?php if ($chmod_files) {
+                echo 1;
+            } else {
+                echo 0;
+            } ?>" />
+	<input type="hidden" id="chmod_dirs_allowed" value="<?php if ($chmod_dirs) {
+                echo 1;
+            } else {
+                echo 0;
+            } ?>" />
 	<input type="hidden" id="lang_lang_change" value="<?php echo trans('Lang_Change'); ?>" />
-	<input type="hidden" id="edit_text_files_allowed" value="<?php if($edit_text_files) echo 1; else echo 0; ?>" />
+	<input type="hidden" id="edit_text_files_allowed" value="<?php if ($edit_text_files) {
+                echo 1;
+            } else {
+                echo 0;
+            } ?>" />
 	<input type="hidden" id="lang_edit_file" value="<?php echo trans('Edit_File'); ?>" />
 	<input type="hidden" id="lang_new_file" value="<?php echo trans('New_File'); ?>" />
 	<input type="hidden" id="lang_filename" value="<?php echo trans('Filename'); ?>" />
@@ -415,10 +430,10 @@ $get_params = http_build_query($get_params);
 	<input type="hidden" id="lang_edit_image" value="<?php echo trans('Edit_image'); ?>" />
 	<input type="hidden" id="lang_select" value="<?php echo trans('Select'); ?>" />
 	<input type="hidden" id="lang_extract" value="<?php echo trans('Extract'); ?>" />
-	<input type="hidden" id="transliteration" value="<?php echo $transliteration?"true":"false"; ?>" />
-	<input type="hidden" id="convert_spaces" value="<?php echo $convert_spaces?"true":"false"; ?>" />
-    <input type="hidden" id="replace_with" value="<?php echo $convert_spaces? $replace_with : ""; ?>" />
-<?php if($upload_files){ ?>
+	<input type="hidden" id="transliteration" value="<?php echo $transliteration ? 'true' : 'false'; ?>" />
+	<input type="hidden" id="convert_spaces" value="<?php echo $convert_spaces ? 'true' : 'false'; ?>" />
+    <input type="hidden" id="replace_with" value="<?php echo $convert_spaces ? $replace_with : ''; ?>" />
+<?php if ($upload_files) { ?>
 <!-- uploader div start -->
 <div class="uploader">
     <div class="text-center">
@@ -426,7 +441,7 @@ $get_params = http_build_query($get_params);
     </div>
 	<div class="space10"></div><div class="space10"></div>
 	<div class="tabbable upload-tabbable"> <!-- Only required for left/right tabs -->
-		<?php if($java_upload){ ?>
+		<?php if ($java_upload) { ?>
 	    <ul class="nav nav-tabs">
 			<li class="active"><a href="#tab1" data-toggle="tab"><?php echo trans('Upload_base'); ?></a></li>
 			<li><a href="#tab2" id="uploader-btn" data-toggle="tab"><?php echo trans('Upload_java'); ?></a></li>
@@ -453,7 +468,7 @@ $get_params = http_build_query($get_params);
 				</form>
 			</div>
 		    <div class="upload-help"><?php echo trans('Upload_base_help'); ?></div>
-			<?php if($java_upload){ ?>
+			<?php if ($java_upload) { ?>
 			</div>
 			<div class="tab-pane" id="tab2">
 		    	<div id="iframe-container"></div>
@@ -472,85 +487,90 @@ $get_params = http_build_query($get_params);
 <?php
 
 $class_ext = '';
-$src = '';
+    $src = '';
 
-$files = scandir($current_path.$rfm_subfolder.$subdir);
-$n_files=count($files);
+    $files = scandir($current_path.$rfm_subfolder.$subdir);
+    $n_files = count($files);
 
-//php sorting
-$sorted=array();
-$current_folder=array();
-$prev_folder=array();
-$current_files_number = 0;
-$current_folders_number = 0;
-foreach($files as $k=>$file){
-    if($file==".") $current_folder=array('file'=>$file);
-    elseif($file=="..") $prev_folder=array('file'=>$file);
-    elseif(is_dir($current_path.$rfm_subfolder.$subdir.$file)){
-		$date=filemtime($current_path.$rfm_subfolder.$subdir. $file);
-		if($show_folder_size){
-			list($size,$nfiles,$nfolders) = folder_info($current_path.$rfm_subfolder.$subdir. $file);
-			$current_folders_number++;
-		} else {
-			$size=0;
-		}
-		$file_ext=trans('Type_dir');
-		$sorted[$k]=array(
-			'file'=>$file,
-			'file_lcase'=>strtolower($file),
-			'date'=>$date,
-			'size'=>$size,
-			'nfiles'=>$nfiles,
-			'nfolders'=>$nfolders,
-			'extension'=>$file_ext,
-			'extension_lcase'=>strtolower($file_ext));
-    }else{
-    	$current_files_number++;
-		$file_path=$current_path.$rfm_subfolder.$subdir.$file;
-		$date=filemtime($file_path);
-		$size=filesize($file_path);
-		$file_ext = substr(strrchr($file,'.'),1);
-		$sorted[$k]=array('file'=>$file,'file_lcase'=>strtolower($file),'date'=>$date,'size'=>$size,'extension'=>$file_ext,'extension_lcase'=>strtolower($file_ext));
+    //php sorting
+    $sorted = [];
+    $current_folder = [];
+    $prev_folder = [];
+    $current_files_number = 0;
+    $current_folders_number = 0;
+    foreach ($files as $k=>$file) {
+        if ($file == '.') {
+            $current_folder = ['file'=>$file];
+        } elseif ($file == '..') {
+            $prev_folder = ['file'=>$file];
+        } elseif (is_dir($current_path.$rfm_subfolder.$subdir.$file)) {
+            $date = filemtime($current_path.$rfm_subfolder.$subdir.$file);
+            if ($show_folder_size) {
+                list($size, $nfiles, $nfolders) = folder_info($current_path.$rfm_subfolder.$subdir.$file);
+                $current_folders_number++;
+            } else {
+                $size = 0;
+            }
+            $file_ext = trans('Type_dir');
+            $sorted[$k] = [
+                'file'           => $file,
+                'file_lcase'     => strtolower($file),
+                'date'           => $date,
+                'size'           => $size,
+                'nfiles'         => $nfiles,
+                'nfolders'       => $nfolders,
+                'extension'      => $file_ext,
+                'extension_lcase'=> strtolower($file_ext), ];
+        } else {
+            $current_files_number++;
+            $file_path = $current_path.$rfm_subfolder.$subdir.$file;
+            $date = filemtime($file_path);
+            $size = filesize($file_path);
+            $file_ext = substr(strrchr($file, '.'), 1);
+            $sorted[$k] = ['file'=>$file, 'file_lcase'=>strtolower($file), 'date'=>$date, 'size'=>$size, 'extension'=>$file_ext, 'extension_lcase'=>strtolower($file_ext)];
+        }
     }
+
+    // Should lazy loading be enabled
+    $lazy_loading_enabled = ($lazy_loading_file_number_threshold == 0 || $lazy_loading_file_number_threshold != -1 && $n_files > $lazy_loading_file_number_threshold) ? true : false;
+
+    function filenameSort($x, $y)
+    {
+        return $x['file_lcase'] < $y['file_lcase'];
+    }
+    function dateSort($x, $y)
+    {
+        return $x['date'] < $y['date'];
+    }
+    function sizeSort($x, $y)
+    {
+        return $x['size'] < $y['size'];
+    }
+    function extensionSort($x, $y)
+    {
+        return $x['extension_lcase'] < $y['extension_lcase'];
+    }
+
+    switch ($sort_by) {
+    case 'date':
+        usort($sorted, 'dateSort');
+        break;
+    case 'size':
+        usort($sorted, 'sizeSort');
+        break;
+    case 'extension':
+        usort($sorted, 'extensionSort');
+        break;
+    default:
+        usort($sorted, 'filenameSort');
+        break;
 }
 
-// Should lazy loading be enabled
-$lazy_loading_enabled= ($lazy_loading_file_number_threshold == 0 || $lazy_loading_file_number_threshold != -1 && $n_files > $lazy_loading_file_number_threshold) ? true : false;
+    if (!$descending) {
+        $sorted = array_reverse($sorted);
+    }
 
-function filenameSort($x, $y) {
-    return $x['file_lcase'] <  $y['file_lcase'];
-}
-function dateSort($x, $y) {
-    return $x['date'] <  $y['date'];
-}
-function sizeSort($x, $y) {
-    return $x['size'] <  $y['size'];
-}
-function extensionSort($x, $y) {
-    return $x['extension_lcase'] <  $y['extension_lcase'];
-}
-
-switch($sort_by){
-	case 'date':
-		usort($sorted, 'dateSort');
-		break;
-	case 'size':
-		usort($sorted, 'sizeSort');
-		break;
-	case 'extension':
-		usort($sorted, 'extensionSort');
-		break;
-	default:
-		usort($sorted, 'filenameSort');
-		break;
-}
-
-if(!$descending){
-    $sorted=array_reverse($sorted);
-}
-
-$files=array_merge(array($prev_folder),array($current_folder),$sorted);
-?>
+    $files = array_merge([$prev_folder], [$current_folder], $sorted); ?>
 <!-- header div start -->
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
@@ -565,28 +585,40 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 		<div class="filters">
 		    <div class="row-fluid">
 			<div class="span4 half">
-			    <?php if($upload_files){ ?>
+			    <?php if ($upload_files) { ?>
 						    <button class="tip btn upload-btn" title="<?php echo  trans('Upload_file'); ?>"><i class="rficon-upload"></i></button>
 			    <?php } ?>
-			    <?php if($create_text_files){ ?>
+			    <?php if ($create_text_files) { ?>
 						    <button class="tip btn create-file-btn" title="<?php echo  trans('New_File'); ?>"><i class="icon-plus"></i><i class="icon-file"></i></button>
 			    <?php } ?>
-			    <?php if($create_folders){ ?>
+			    <?php if ($create_folders) { ?>
 						    <button class="tip btn new-folder" title="<?php echo  trans('New_Folder')?>"><i class="icon-plus"></i><i class="icon-folder-open"></i></button>
 			    <?php } ?>
-			    <?php if($copy_cut_files || $copy_cut_dirs){ ?>
+			    <?php if ($copy_cut_files || $copy_cut_dirs) { ?>
 				    <button class="tip btn paste-here-btn" title="<?php echo trans('Paste_Here'); ?>"><i class="rficon-clipboard-apply"></i></button>
 				    <button class="tip btn clear-clipboard-btn" title="<?php echo trans('Clear_Clipboard'); ?>"><i class="rficon-clipboard-clear"></i></button>
 				<?php } ?>
 			</div>
 			<div class="span2 half view-controller">
-			    <button class="btn tip<?php if($view==0) echo " btn-inverse"; ?>" id="view0" data-value="0" title="<?php echo trans('View_boxes'); ?>"><i class="icon-th <?php if($view==0) echo "icon-white"; ?>"></i></button>
-			    <button class="btn tip<?php if($view==1) echo " btn-inverse"; ?>" id="view1" data-value="1" title="<?php echo trans('View_list'); ?>"><i class="icon-align-justify <?php if($view==1) echo "icon-white"; ?>"></i></button>
-			    <button class="btn tip<?php if($view==2) echo " btn-inverse"; ?>" id="view2" data-value="2" title="<?php echo trans('View_columns_list'); ?>"><i class="icon-fire <?php if($view==2) echo "icon-white"; ?>"></i></button>
+			    <button class="btn tip<?php if ($view == 0) {
+        echo ' btn-inverse';
+    } ?>" id="view0" data-value="0" title="<?php echo trans('View_boxes'); ?>"><i class="icon-th <?php if ($view == 0) {
+        echo 'icon-white';
+    } ?>"></i></button>
+			    <button class="btn tip<?php if ($view == 1) {
+        echo ' btn-inverse';
+    } ?>" id="view1" data-value="1" title="<?php echo trans('View_list'); ?>"><i class="icon-align-justify <?php if ($view == 1) {
+        echo 'icon-white';
+    } ?>"></i></button>
+			    <button class="btn tip<?php if ($view == 2) {
+        echo ' btn-inverse';
+    } ?>" id="view2" data-value="2" title="<?php echo trans('View_columns_list'); ?>"><i class="icon-fire <?php if ($view == 2) {
+        echo 'icon-white';
+    } ?>"></i></button>
 			</div>
 			<div class="span6 entire types">
 				<span><?php echo trans('Filters'); ?>:</span>
-			    <?php if($_GET['type']!=1 && $_GET['type']!=3){ ?>
+			    <?php if ($_GET['type'] != 1 && $_GET['type'] != 3) { ?>
 			    <input id="select-type-1" name="radio-sort" type="radio" data-item="ff-item-type-1" checked="checked"  class="hide"  />
 			    <label id="ff-item-type-1" title="<?php echo trans('Files'); ?>" for="select-type-1" class="tip btn ff-label-type-1"><i class="icon-file"></i></label>
 			    <input id="select-type-2" name="radio-sort" type="radio" data-item="ff-item-type-2" class="hide"  />
@@ -598,10 +630,10 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    <input id="select-type-5" name="radio-sort" type="radio" data-item="ff-item-type-5" class="hide"  />
 			    <label id="ff-item-type-5" title="<?php echo trans('Music'); ?>" for="select-type-5" class="tip btn ff-label-type-5"><i class="icon-music"></i></label>
 			    <?php } ?>
-			    <input accesskey="f" type="text" class="filter-input <?php echo (($_GET['type']!=1 && $_GET['type']!=3) ? '' : 'filter-input-notype'); ?>" id="filter-input" name="filter" placeholder="<?php echo fix_strtolower(trans('Text_filter')); ?>..." value="<?php echo $filter; ?>"/><?php if($n_files>$file_number_limit_js){ ?><label id="filter" class="btn"><i class="icon-play"></i></label><?php } ?>
+			    <input accesskey="f" type="text" class="filter-input <?php echo ($_GET['type'] != 1 && $_GET['type'] != 3) ? '' : 'filter-input-notype'; ?>" id="filter-input" name="filter" placeholder="<?php echo fix_strtolower(trans('Text_filter')); ?>..." value="<?php echo $filter; ?>"/><?php if ($n_files > $file_number_limit_js) { ?><label id="filter" class="btn"><i class="icon-play"></i></label><?php } ?>
 
 			    <input id="select-type-all" name="radio-sort" type="radio" data-item="ff-item-type-all" class="hide"  />
-			     <label id="ff-item-type-all" title="<?php echo trans('All'); ?>" <?php if($_GET['type']==1 || $_GET['type']==3){ ?>style="visibility: hidden;" <?php } ?> data-item="ff-item-type-all" for="select-type-all" style="margin-rigth:0px;" class="tip btn btn-inverse ff-label-type-all"><i class="icon-remove icon-white"></i></label>
+			     <label id="ff-item-type-all" title="<?php echo trans('All'); ?>" <?php if ($_GET['type'] == 1 || $_GET['type'] == 3) { ?>style="visibility: hidden;" <?php } ?> data-item="ff-item-type-all" for="select-type-all" style="margin-rigth:0px;" class="tip btn btn-inverse ff-label-type-all"><i class="icon-remove icon-white"></i></label>
 
 			</div>
 		    </div>
@@ -617,28 +649,27 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 
     <div class="row-fluid">
 	<?php
-	$link="dialog.php?".$get_params;
-	?>
+    $link = 'dialog.php?'.$get_params; ?>
 	<ul class="breadcrumb">
 	<li class="pull-left"><a href="<?php echo $link?>/"><i class="icon-home"></i></a></li>
 	<li><span class="divider">/</span></li>
 	<?php
-	$bc=explode("/",$subdir);
-	$tmp_path='';
-	if(!empty($bc))
-	foreach($bc as $k=>$b){
-		$tmp_path.=$b."/";
-		if($k==count($bc)-2){
-	?> <li class="active"><?php echo $b?></li><?php
-		}elseif($b!=""){ ?>
-		<li><a href="<?php echo $link.$tmp_path?>"><?php echo $b?></a></li><li><span class="divider"><?php echo "/"; ?></span></li>
+    $bc = explode('/', $subdir);
+    $tmp_path = '';
+    if (!empty($bc)) {
+        foreach ($bc as $k=>$b) {
+            $tmp_path .= $b.'/';
+            if ($k == count($bc) - 2) {
+                ?> <li class="active"><?php echo $b?></li><?php
+            } elseif ($b != '') { ?>
+		<li><a href="<?php echo $link.$tmp_path?>"><?php echo $b?></a></li><li><span class="divider"><?php echo '/'; ?></span></li>
 	<?php }
-	}
-	?>
+        }
+    } ?>
 
 	<li class="pull-right"><a class="btn-small" href="javascript:void('')" id="info"><i class="icon-question-sign"></i></a></li>
 	<li class="pull-right"><a class="btn-small" href="javascript:void('')" id="change_lang_btn"><i class="icon-globe"></i></a></li>
-	<li class="pull-right"><a id="refresh" class="btn-small" href="dialog.php?<?php echo $get_params.$subdir."&".uniqid() ?>"><i class="icon-refresh"></i></a></li>
+	<li class="pull-right"><a id="refresh" class="btn-small" href="dialog.php?<?php echo $get_params.$subdir.'&'.uniqid() ?>"><i class="icon-refresh"></i></a></li>
 
 	<li class="pull-right">
 	    <div class="btn-group">
@@ -648,270 +679,327 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 		</a>
 		<ul class="dropdown-menu pull-left sorting">
 		    <li class="text-center"><strong><?php echo trans('Sorting') ?></strong></li>
-		<li><a class="sorter sort-name <?php if($sort_by=="name"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="name"><?php echo trans('Filename'); ?></a></li>
-		<li><a class="sorter sort-date <?php if($sort_by=="date"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="date"><?php echo trans('Date'); ?></a></li>
-		<li><a class="sorter sort-size <?php if($sort_by=="size"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="size"><?php echo trans('Size'); ?></a></li>
-		<li><a class="sorter sort-extension <?php if($sort_by=="extension"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="extension"><?php echo trans('Type'); ?></a></li>
+		<li><a class="sorter sort-name <?php if ($sort_by == 'name') {
+        echo ($descending) ? 'descending' : 'ascending';
+    } ?>" href="javascript:void('')" data-sort="name"><?php echo trans('Filename'); ?></a></li>
+		<li><a class="sorter sort-date <?php if ($sort_by == 'date') {
+        echo ($descending) ? 'descending' : 'ascending';
+    } ?>" href="javascript:void('')" data-sort="date"><?php echo trans('Date'); ?></a></li>
+		<li><a class="sorter sort-size <?php if ($sort_by == 'size') {
+        echo ($descending) ? 'descending' : 'ascending';
+    } ?>" href="javascript:void('')" data-sort="size"><?php echo trans('Size'); ?></a></li>
+		<li><a class="sorter sort-extension <?php if ($sort_by == 'extension') {
+        echo ($descending) ? 'descending' : 'ascending';
+    } ?>" href="javascript:void('')" data-sort="extension"><?php echo trans('Type'); ?></a></li>
 		</ul>
 	      </div>
 	</li>
-	<li><small class="hidden-phone">(<span id="files_number"><?php echo $current_files_number."</span> ".trans('Files')." - <span id='folders_number'>".$current_folders_number."</span> ".trans('Folders'); ?>)</small></li>
+	<li><small class="hidden-phone">(<span id="files_number"><?php echo $current_files_number.'</span> '.trans('Files')." - <span id='folders_number'>".$current_folders_number.'</span> '.trans('Folders'); ?>)</small></li>
 	</ul>
     </div>
     <!-- breadcrumb div end -->
     <div class="row-fluid ff-container">
 	<div class="span12">
-	    <?php if(@opendir($current_path.$rfm_subfolder.$subdir)===FALSE){ ?>
+	    <?php if (@opendir($current_path.$rfm_subfolder.$subdir) === false) { ?>
 	    <br/>
 	    <div class="alert alert-error">There is an error! The upload folder there isn't. Check your config.php file. </div>
-	    <?php }else{ ?>
+	    <?php } else { ?>
 	    <h4 id="help"><?php echo trans('Swipe_help'); ?></h4>
-	    <?php if(isset($folder_message)){ ?>
+	    <?php if (isset($folder_message)) { ?>
 		<div class="alert alert-block"><?php echo $folder_message; ?></div>
 	    <?php } ?>
-	    <?php if($show_sorting_bar){ ?>
+	    <?php if ($show_sorting_bar) { ?>
 	    <!-- sorter -->
-	    <div class="sorter-container <?php echo "list-view".$view; ?>">
-		<div class="file-name"><a class="sorter sort-name <?php if($sort_by=="name"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="name"><?php echo trans('Filename'); ?></a></div>
-		<div class="file-date"><a class="sorter sort-date <?php if($sort_by=="date"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="date"><?php echo trans('Date'); ?></a></div>
-		<div class="file-size"><a class="sorter sort-size <?php if($sort_by=="size"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="size"><?php echo trans('Size'); ?></a></div>
+	    <div class="sorter-container <?php echo 'list-view'.$view; ?>">
+		<div class="file-name"><a class="sorter sort-name <?php if ($sort_by == 'name') {
+        echo ($descending) ? 'descending' : 'ascending';
+    } ?>" href="javascript:void('')" data-sort="name"><?php echo trans('Filename'); ?></a></div>
+		<div class="file-date"><a class="sorter sort-date <?php if ($sort_by == 'date') {
+        echo ($descending) ? 'descending' : 'ascending';
+    } ?>" href="javascript:void('')" data-sort="date"><?php echo trans('Date'); ?></a></div>
+		<div class="file-size"><a class="sorter sort-size <?php if ($sort_by == 'size') {
+        echo ($descending) ? 'descending' : 'ascending';
+    } ?>" href="javascript:void('')" data-sort="size"><?php echo trans('Size'); ?></a></div>
 		<div class='img-dimension'><?php echo trans('Dimension'); ?></div>
-		<div class='file-extension'><a class="sorter sort-extension <?php if($sort_by=="extension"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="extension"><?php echo trans('Type'); ?></a></div>
+		<div class='file-extension'><a class="sorter sort-extension <?php if ($sort_by == 'extension') {
+        echo ($descending) ? 'descending' : 'ascending';
+    } ?>" href="javascript:void('')" data-sort="extension"><?php echo trans('Type'); ?></a></div>
 		<div class='file-operations'><?php echo trans('Operations'); ?></div>
 	    </div>
 	    <?php } ?>
 
 	    <input type="hidden" id="file_number" value="<?php echo $n_files; ?>" />
 	    <!--ul class="thumbnails ff-items"-->
-	    <ul class="grid cs-style-2 <?php echo "list-view".$view; ?>" id="main-item-container">
+	    <ul class="grid cs-style-2 <?php echo 'list-view'.$view; ?>" id="main-item-container">
 		<?php
-		$jplayer_ext=array("mp4","flv","webmv","webma","webm","m4a","m4v","ogv","oga","mp3","midi","mid","ogg","wav");
-		foreach ($files as $file_array) {
-		  $file=$file_array['file'];
-			if($file == '.' || (isset($file_array['extension']) && $file_array['extension']!=trans('Type_dir')) || ($file == '..' && $subdir == '') || in_array($file, $hidden_folders) || ($filter!='' && $n_files>$file_number_limit_js && $file!=".." && stripos($file,$filter)===false))
-			  continue;
-			$new_name=fix_filename($file,$transliteration);
-			if($file!='..' && $file!=$new_name){
-			    //rename
-			    rename_folder($current_path.$subdir.$file,$new_name,$transliteration);
-			    $file=$new_name;
-			}
-			//add in thumbs folder if not exist
-			if (!file_exists($thumbs_path.$subdir.$file)) create_folder(false,$thumbs_path.$subdir.$file);
-			$class_ext = 3;
-			if($file=='..' && trim($subdir) != '' ){
-		    $src = explode("/",$subdir);
-		    unset($src[count($src)-2]);
-		    $src=implode("/",$src);
-		    if($src=='') $src="/";
-				}
-				elseif ($file!='..') {
-				    $src = $subdir . $file."/";
-				}
-
-			?>
-			    <li data-name="<?php echo $file ?>" class="<?php if($file=='..') echo 'back'; else echo 'dir'; ?>" <?php if(($filter!='' && stripos($file,$filter)===false)) echo ' style="display:none;"'; ?>><?php
-			    $file_prevent_rename = false;
-			    $file_prevent_delete = false;
-			    if (isset($filePermissions[$file])) {
-				$file_prevent_rename = isset($filePermissions[$file]['prevent_rename']) && $filePermissions[$file]['prevent_rename'];
-				$file_prevent_delete = isset($filePermissions[$file]['prevent_delete']) && $filePermissions[$file]['prevent_delete'];
-			    }
-			    ?><figure data-name="<?php echo $file ?>" class="<?php if($file=="..") echo "back-"; ?>directory" data-type="<?php if($file!=".."){ echo "dir"; } ?>">
-			    <?php if($file==".."){ ?>
-			    	<input type="hidden" class="path" value="<?php echo str_replace('.','',dirname($rfm_subfolder.$subdir)); ?>"/>
-			    	<input type="hidden" class="path_thumb" value="<?php echo dirname($thumbs_path.$subdir)."/"; ?>"/>
+        $jplayer_ext = ['mp4', 'flv', 'webmv', 'webma', 'webm', 'm4a', 'm4v', 'ogv', 'oga', 'mp3', 'midi', 'mid', 'ogg', 'wav'];
+        foreach ($files as $file_array) {
+            $file = $file_array['file'];
+            if ($file == '.' || (isset($file_array['extension']) && $file_array['extension'] != trans('Type_dir')) || ($file == '..' && $subdir == '') || in_array($file, $hidden_folders) || ($filter != '' && $n_files > $file_number_limit_js && $file != '..' && stripos($file, $filter) === false)) {
+                continue;
+            }
+            $new_name = fix_filename($file, $transliteration);
+            if ($file != '..' && $file != $new_name) {
+                //rename
+                rename_folder($current_path.$subdir.$file, $new_name, $transliteration);
+                $file = $new_name;
+            }
+            //add in thumbs folder if not exist
+            if (!file_exists($thumbs_path.$subdir.$file)) {
+                create_folder(false, $thumbs_path.$subdir.$file);
+            }
+            $class_ext = 3;
+            if ($file == '..' && trim($subdir) != '') {
+                $src = explode('/', $subdir);
+                unset($src[count($src) - 2]);
+                $src = implode('/', $src);
+                if ($src == '') {
+                    $src = '/';
+                }
+            } elseif ($file != '..') {
+                $src = $subdir.$file.'/';
+            } ?>
+			    <li data-name="<?php echo $file ?>" class="<?php if ($file == '..') {
+                echo 'back';
+            } else {
+                echo 'dir';
+            } ?>" <?php if (($filter != '' && stripos($file, $filter) === false)) {
+                echo ' style="display:none;"';
+            } ?>><?php
+                $file_prevent_rename = false;
+            $file_prevent_delete = false;
+            if (isset($filePermissions[$file])) {
+                $file_prevent_rename = isset($filePermissions[$file]['prevent_rename']) && $filePermissions[$file]['prevent_rename'];
+                $file_prevent_delete = isset($filePermissions[$file]['prevent_delete']) && $filePermissions[$file]['prevent_delete'];
+            } ?><figure data-name="<?php echo $file ?>" class="<?php if ($file == '..') {
+                echo 'back-';
+            } ?>directory" data-type="<?php if ($file != '..') {
+                echo 'dir';
+            } ?>">
+			    <?php if ($file == '..') { ?>
+			    	<input type="hidden" class="path" value="<?php echo str_replace('.', '', dirname($rfm_subfolder.$subdir)); ?>"/>
+			    	<input type="hidden" class="path_thumb" value="<?php echo dirname($thumbs_path.$subdir).'/'; ?>"/>
 			    <?php } ?>
-				  <a class="folder-link" href="dialog.php?<?php echo $get_params.rawurlencode($src)."&".uniqid() ?>">
+				  <a class="folder-link" href="dialog.php?<?php echo $get_params.rawurlencode($src).'&'.uniqid() ?>">
 					  <div class="img-precontainer">
 							<div class="img-container directory"><span></span>
-							<img class="directory-img"  src="img/<?php echo $icon_theme; ?>/folder<?php if($file==".."){ echo "_back"; }?>.png" />
+							<img class="directory-img"  src="img/<?php echo $icon_theme; ?>/folder<?php if ($file == '..') {
+                echo '_back';
+            } ?>.png" />
 							</div>
 					  </div>
 				    <div class="img-precontainer-mini directory">
 							<div class="img-container-mini">
 						    <span></span>
-						    <img class="directory-img"  src="img/<?php echo $icon_theme; ?>/folder<?php if($file==".."){ echo "_back"; }?>.png" />
+						    <img class="directory-img"  src="img/<?php echo $icon_theme; ?>/folder<?php if ($file == '..') {
+                echo '_back';
+            } ?>.png" />
 							</div>
 				    </div>
-			<?php if($file==".."){ ?>
+			<?php if ($file == '..') { ?>
 				    <div class="box no-effect">
 					<h4><?php echo trans('Back') ?></h4>
 				    </div>
 				    </a>
 
-			<?php }else{ ?>
+			<?php } else { ?>
 				    </a>
 				    <div class="box">
-					<h4 class="<?php if($ellipsis_title_after_first_row){ echo "ellipsis"; } ?>"><a class="folder-link" data-file="<?php echo $file ?>" href="dialog.php?<?php echo $get_params.rawurlencode($src)."&".uniqid() ?>"><?php echo $file; ?></a></h4>
+					<h4 class="<?php if ($ellipsis_title_after_first_row) {
+                echo 'ellipsis';
+            } ?>"><a class="folder-link" data-file="<?php echo $file ?>" href="dialog.php?<?php echo $get_params.rawurlencode($src).'&'.uniqid() ?>"><?php echo $file; ?></a></h4>
 				    </div>
-				    <input type="hidden" class="name" value="<?php echo $file_array['file_lcase'];  ?>"/>
+				    <input type="hidden" class="name" value="<?php echo $file_array['file_lcase']; ?>"/>
 				    <input type="hidden" class="date" value="<?php echo $file_array['date']; ?>"/>
-				    <input type="hidden" class="size" value="<?php echo $file_array['size'];  ?>"/>
+				    <input type="hidden" class="size" value="<?php echo $file_array['size']; ?>"/>
 				    <input type="hidden" class="extension" value="<?php echo trans('Type_dir'); ?>"/>
-				    <div class="file-date"><?php echo date(trans('Date_type'),$file_array['date'])?></div>
-				    <?php if($show_folder_size){ ?>
+				    <div class="file-date"><?php echo date(trans('Date_type'), $file_array['date'])?></div>
+				    <?php if ($show_folder_size) { ?>
 				    	<div class="file-size"><?php echo makeSize($file_array['size'])?></div>
-					    <input type="hidden" class="nfiles" value="<?php echo $file_array['nfiles'];  ?>"/>
-					    <input type="hidden" class="nfolders" value="<?php echo $file_array['nfolders'];  ?>"/>
+					    <input type="hidden" class="nfiles" value="<?php echo $file_array['nfiles']; ?>"/>
+					    <input type="hidden" class="nfolders" value="<?php echo $file_array['nfolders']; ?>"/>
 				    <?php } ?>
 				    <div class='file-extension'><?php echo trans('Type_dir'); ?></div>
 				    <figcaption>
-					    <a href="javascript:void('')" class="tip-left edit-button rename-file-paths <?php if($rename_folders && !$file_prevent_rename) echo "rename-folder"; ?>" title="<?php echo trans('Rename')?>" data-path="<?php echo $rfm_subfolder.$subdir.$file; ?>"">
-					    <i class="icon-pencil <?php if(!$rename_folders || $file_prevent_rename) echo 'icon-white'; ?>"></i></a>
-					    <a href="javascript:void('')" class="tip-left erase-button <?php if($delete_folders && !$file_prevent_delete) echo "delete-folder"; ?>" title="<?php echo trans('Erase')?>" data-confirm="<?php echo trans('Confirm_Folder_del'); ?>" data-path="<?php echo $rfm_subfolder.$subdir.$file; ?>" >
-					    <i class="icon-trash <?php if(!$delete_folders || $file_prevent_delete) echo 'icon-white'; ?>"></i>
+					    <a href="javascript:void('')" class="tip-left edit-button rename-file-paths <?php if ($rename_folders && !$file_prevent_rename) {
+                echo 'rename-folder';
+            } ?>" title="<?php echo trans('Rename')?>" data-path="<?php echo $rfm_subfolder.$subdir.$file; ?>"">
+					    <i class="icon-pencil <?php if (!$rename_folders || $file_prevent_rename) {
+                echo 'icon-white';
+            } ?>"></i></a>
+					    <a href="javascript:void('')" class="tip-left erase-button <?php if ($delete_folders && !$file_prevent_delete) {
+                echo 'delete-folder';
+            } ?>" title="<?php echo trans('Erase')?>" data-confirm="<?php echo trans('Confirm_Folder_del'); ?>" data-path="<?php echo $rfm_subfolder.$subdir.$file; ?>" >
+					    <i class="icon-trash <?php if (!$delete_folders || $file_prevent_delete) {
+                echo 'icon-white';
+            } ?>"></i>
 					    </a>
 				    </figcaption>
 			<?php } ?>
 			    </figure>
 			</li>
 			<?php
-		    }
+        }
 
-            $files_prevent_duplicate = array();
-		    foreach ($files as $nu=>$file_array) {
-			$file=$file_array['file'];
+            $files_prevent_duplicate = [];
+            foreach ($files as $nu=>$file_array) {
+                $file = $file_array['file'];
 
-			    if($file == '.' || $file == '..' || is_dir($current_path.$rfm_subfolder.$subdir.$file) || in_array($file, $hidden_files) || !in_array(fix_strtolower($file_array['extension']), $ext) || ($filter!='' && $n_files>$file_number_limit_js && stripos($file,$filter)===false))
-				    continue;
+                if ($file == '.' || $file == '..' || is_dir($current_path.$rfm_subfolder.$subdir.$file) || in_array($file, $hidden_files) || !in_array(fix_strtolower($file_array['extension']), $ext) || ($filter != '' && $n_files > $file_number_limit_js && stripos($file, $filter) === false)) {
+                    continue;
+                }
 
-			    $file_path=$current_path.$rfm_subfolder.$subdir.$file;
-			    //check if file have illegal caracter
+                $file_path = $current_path.$rfm_subfolder.$subdir.$file;
+                //check if file have illegal caracter
 
-			    $filename=substr($file, 0, '-' . (strlen($file_array['extension']) + 1));
+                $filename = substr($file, 0, '-'.(strlen($file_array['extension']) + 1));
 
-			    if($file!=fix_filename($file,$transliteration)){
-				$file1=fix_filename($file,$transliteration);
-				$file_path1=($current_path.$rfm_subfolder.$subdir.$file1);
-				if(file_exists($file_path1)){
-				    $i = 1;
-				    $info=pathinfo($file1);
-				    while(file_exists($current_path.$rfm_subfolder.$subdir.$info['filename'].".[".$i."].".$info['extension'])) {
-					    $i++;
-				    }
-				    $file1=$info['filename'].".[".$i."].".$info['extension'];
-				    $file_path1=($current_path.$rfm_subfolder.$subdir.$file1);
-				}
+                if ($file != fix_filename($file, $transliteration)) {
+                    $file1 = fix_filename($file, $transliteration);
+                    $file_path1 = ($current_path.$rfm_subfolder.$subdir.$file1);
+                    if (file_exists($file_path1)) {
+                        $i = 1;
+                        $info = pathinfo($file1);
+                        while (file_exists($current_path.$rfm_subfolder.$subdir.$info['filename'].'.['.$i.'].'.$info['extension'])) {
+                            $i++;
+                        }
+                        $file1 = $info['filename'].'.['.$i.'].'.$info['extension'];
+                        $file_path1 = ($current_path.$rfm_subfolder.$subdir.$file1);
+                    }
 
-				$filename=substr($file1, 0, '-' . (strlen($file_array['extension']) + 1));
-				rename_file($file_path,fix_filename($filename,$transliteration),$transliteration);
-				$file=$file1;
-				$file_array['extension']=fix_filename($file_array['extension'],$transliteration);
-				$file_path=$file_path1;
-			    }
+                    $filename = substr($file1, 0, '-'.(strlen($file_array['extension']) + 1));
+                    rename_file($file_path, fix_filename($filename, $transliteration), $transliteration);
+                    $file = $file1;
+                    $file_array['extension'] = fix_filename($file_array['extension'], $transliteration);
+                    $file_path = $file_path1;
+                }
 
-			    $is_img=false;
-			    $is_video=false;
-			    $is_audio=false;
-			    $show_original=false;
-			    $show_original_mini=false;
-			    $mini_src="";
-			    $src_thumb="";
-			    $extension_lower=fix_strtolower($file_array['extension']);
-			    if(in_array($extension_lower, $ext_img)){
-				$src = $base_url . $cur_dir . rawurlencode($file);
-				$mini_src = $src_thumb = $thumbs_path.$subdir. $file;
-				//add in thumbs folder if not exist
-				if(!file_exists($src_thumb)){
-			    try {
-			    	if(!create_img($file_path, $src_thumb, 122, 91)){
-							$src_thumb=$mini_src="";
-						}else{
-							new_thumbnails_creation($current_path.$rfm_subfolder.$subdir,$file_path,$file,$current_path,'','','','','','','',$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height,$fixed_image_creation_option);
-						}
-			    } catch (Exception $e) {
-						$src_thumb=$mini_src="";
-			    }
-				}
-				$is_img=true;
-				//check if is smaller than thumb
-				list($img_width, $img_height, $img_type, $attr)=@getimagesize($file_path);
-				if($img_width<122 && $img_height<91){
-					$src_thumb=$current_path.$rfm_subfolder.$subdir.$file;
-					$show_original=true;
-				}
+                $is_img = false;
+                $is_video = false;
+                $is_audio = false;
+                $show_original = false;
+                $show_original_mini = false;
+                $mini_src = '';
+                $src_thumb = '';
+                $extension_lower = fix_strtolower($file_array['extension']);
+                if (in_array($extension_lower, $ext_img)) {
+                    $src = $base_url.$cur_dir.rawurlencode($file);
+                    $mini_src = $src_thumb = $thumbs_path.$subdir.$file;
+                    //add in thumbs folder if not exist
+                    if (!file_exists($src_thumb)) {
+                        try {
+                            if (!create_img($file_path, $src_thumb, 122, 91)) {
+                                $src_thumb = $mini_src = '';
+                            } else {
+                                new_thumbnails_creation($current_path.$rfm_subfolder.$subdir, $file_path, $file, $current_path, '', '', '', '', '', '', '', $fixed_image_creation, $fixed_path_from_filemanager, $fixed_image_creation_name_to_prepend, $fixed_image_creation_to_append, $fixed_image_creation_width, $fixed_image_creation_height, $fixed_image_creation_option);
+                            }
+                        } catch (Exception $e) {
+                            $src_thumb = $mini_src = '';
+                        }
+                    }
+                    $is_img = true;
+                    //check if is smaller than thumb
+                    list($img_width, $img_height, $img_type, $attr) = @getimagesize($file_path);
+                    if ($img_width < 122 && $img_height < 91) {
+                        $src_thumb = $current_path.$rfm_subfolder.$subdir.$file;
+                        $show_original = true;
+                    }
 
-				if($img_width<45 && $img_height<38){
-				    $mini_src=$current_path.$rfm_subfolder.$subdir.$file;
-				    $show_original_mini=true;
-				}
-			    }
-			    $is_icon_thumb=false;
-			    $is_icon_thumb_mini=false;
-			    $no_thumb=false;
-			    if($src_thumb==""){
-				$no_thumb=true;
-				if(file_exists('img/'.$icon_theme.'/'.$extension_lower.".jpg")){
-					$src_thumb ='img/'.$icon_theme.'/'.$extension_lower.".jpg";
-				}else{
-					$src_thumb = "img/".$icon_theme."/default.jpg";
-				}
-				$is_icon_thumb=true;
-			    }
-			    if($mini_src==""){
-				$is_icon_thumb_mini=false;
-			    }
+                    if ($img_width < 45 && $img_height < 38) {
+                        $mini_src = $current_path.$rfm_subfolder.$subdir.$file;
+                        $show_original_mini = true;
+                    }
+                }
+                $is_icon_thumb = false;
+                $is_icon_thumb_mini = false;
+                $no_thumb = false;
+                if ($src_thumb == '') {
+                    $no_thumb = true;
+                    if (file_exists('img/'.$icon_theme.'/'.$extension_lower.'.jpg')) {
+                        $src_thumb = 'img/'.$icon_theme.'/'.$extension_lower.'.jpg';
+                    } else {
+                        $src_thumb = 'img/'.$icon_theme.'/default.jpg';
+                    }
+                    $is_icon_thumb = true;
+                }
+                if ($mini_src == '') {
+                    $is_icon_thumb_mini = false;
+                }
 
-			    $class_ext=0;
-			    if (in_array($extension_lower, $ext_video)) {
-				    $class_ext = 4;
-				    $is_video=true;
-			    }elseif (in_array($extension_lower, $ext_img)) {
-				    $class_ext = 2;
-			    }elseif (in_array($extension_lower, $ext_music)) {
-				    $class_ext = 5;
-				    $is_audio=true;
-			    }elseif (in_array($extension_lower, $ext_misc)) {
-				    $class_ext = 3;
-			    }else{
-				    $class_ext = 1;
-			    }
-			    if((!($_GET['type']==1 && !$is_img) && !(($_GET['type']==3 && !$is_video) && ($_GET['type']==3 && !$is_audio))) && $class_ext>0){
-?>
-		    <li class="ff-item-type-<?php echo $class_ext; ?> file"  data-name="<?php echo $file; ?>" <?php if(($filter!='' && stripos($file,$filter)===false)) echo ' style="display:none;"'; ?>><?php
-		    $file_prevent_rename = false;
-		    $file_prevent_delete = false;
-		    if (isset($filePermissions[$file])) {
-			if (isset($filePermissions[$file]['prevent_duplicate']) && $filePermissions[$file]['prevent_duplicate']) {
-			    $files_prevent_duplicate[] = $file;
-			}
-			$file_prevent_rename = isset($filePermissions[$file]['prevent_rename']) && $filePermissions[$file]['prevent_rename'];
-			$file_prevent_delete = isset($filePermissions[$file]['prevent_delete']) && $filePermissions[$file]['prevent_delete'];
-		    }
-            ?>		<figure data-name="<?php echo $file ?>" data-type="<?php if($is_img){ echo "img"; }else{ echo "file"; } ?>">
+                $class_ext = 0;
+                if (in_array($extension_lower, $ext_video)) {
+                    $class_ext = 4;
+                    $is_video = true;
+                } elseif (in_array($extension_lower, $ext_img)) {
+                    $class_ext = 2;
+                } elseif (in_array($extension_lower, $ext_music)) {
+                    $class_ext = 5;
+                    $is_audio = true;
+                } elseif (in_array($extension_lower, $ext_misc)) {
+                    $class_ext = 3;
+                } else {
+                    $class_ext = 1;
+                }
+                if ((!($_GET['type'] == 1 && !$is_img) && !(($_GET['type'] == 3 && !$is_video) && ($_GET['type'] == 3 && !$is_audio))) && $class_ext > 0) {
+                    ?>
+		    <li class="ff-item-type-<?php echo $class_ext; ?> file"  data-name="<?php echo $file; ?>" <?php if (($filter != '' && stripos($file, $filter) === false)) {
+                        echo ' style="display:none;"';
+                    } ?>><?php
+            $file_prevent_rename = false;
+                    $file_prevent_delete = false;
+                    if (isset($filePermissions[$file])) {
+                        if (isset($filePermissions[$file]['prevent_duplicate']) && $filePermissions[$file]['prevent_duplicate']) {
+                            $files_prevent_duplicate[] = $file;
+                        }
+                        $file_prevent_rename = isset($filePermissions[$file]['prevent_rename']) && $filePermissions[$file]['prevent_rename'];
+                        $file_prevent_delete = isset($filePermissions[$file]['prevent_delete']) && $filePermissions[$file]['prevent_delete'];
+                    } ?>		<figure data-name="<?php echo $file ?>" data-type="<?php if ($is_img) {
+                        echo 'img';
+                    } else {
+                        echo 'file';
+                    } ?>">
 				<a href="javascript:void('')" class="link" data-file="<?php echo $file; ?>" data-function="<?php echo $apply; ?>">
 				<div class="img-precontainer">
-				    <?php if($is_icon_thumb){ ?><div class="filetype"><?php echo $extension_lower ?></div><?php } ?>
+				    <?php if ($is_icon_thumb) { ?><div class="filetype"><?php echo $extension_lower ?></div><?php } ?>
 				    <div class="img-container">
 					    <span></span>
-					    <img class="<?php echo $show_original ? "original" : "" ?><?php echo $is_icon_thumb ? " icon" : "" ?><?php echo $lazy_loading_enabled ? " lazy-loaded" : ""?>" <?php echo $lazy_loading_enabled ? "data-original" : "src"?>="<?php echo $src_thumb; ?>">
+					    <img class="<?php echo $show_original ? 'original' : '' ?><?php echo $is_icon_thumb ? ' icon' : '' ?><?php echo $lazy_loading_enabled ? ' lazy-loaded' : ''?>" <?php echo $lazy_loading_enabled ? 'data-original' : 'src'?>="<?php echo $src_thumb; ?>">
 				    </div>
 				</div>
-				<div class="img-precontainer-mini <?php if($is_img) echo 'original-thumb' ?>">
-				    <div class="filetype <?php echo $extension_lower ?> <?php if(in_array($extension_lower, $editable_text_file_exts)) echo 'edit-text-file-allowed' ?> <?php if(!$is_icon_thumb){ echo "hide"; }?>"><?php echo $extension_lower ?></div>
+				<div class="img-precontainer-mini <?php if ($is_img) {
+                        echo 'original-thumb';
+                    } ?>">
+				    <div class="filetype <?php echo $extension_lower ?> <?php if (in_array($extension_lower, $editable_text_file_exts)) {
+                        echo 'edit-text-file-allowed';
+                    } ?> <?php if (!$is_icon_thumb) {
+                        echo 'hide';
+                    } ?>"><?php echo $extension_lower ?></div>
 				    <div class="img-container-mini">
 					<span></span>
-					<?php if($mini_src!=""){ ?>
-					<img class="<?php echo $show_original_mini ? "original" : "" ?><?php echo $is_icon_thumb_mini ? " icon" : "" ?><?php echo $lazy_loading_enabled ? " lazy-loaded" : ""?>" <?php echo $lazy_loading_enabled ? "data-original" : "src"?>="<?php echo $mini_src; ?>">
+					<?php if ($mini_src != '') { ?>
+					<img class="<?php echo $show_original_mini ? 'original' : '' ?><?php echo $is_icon_thumb_mini ? ' icon' : '' ?><?php echo $lazy_loading_enabled ? ' lazy-loaded' : ''?>" <?php echo $lazy_loading_enabled ? 'data-original' : 'src'?>="<?php echo $mini_src; ?>">
 					<?php } ?>
 				    </div>
 				</div>
-				<?php if($is_icon_thumb){ ?>
+				<?php if ($is_icon_thumb) { ?>
 				<div class="cover"></div>
 				<?php } ?>
 				</a>
 				<div class="box">
-				<h4 class="<?php if($ellipsis_title_after_first_row){ echo "ellipsis"; } ?>"><a href="javascript:void('')" class="link" data-file="<?php echo $file; ?>" data-function="<?php echo $apply; ?>">
+				<h4 class="<?php if ($ellipsis_title_after_first_row) {
+                        echo 'ellipsis';
+                    } ?>"><a href="javascript:void('')" class="link" data-file="<?php echo $file; ?>" data-function="<?php echo $apply; ?>">
 				<?php echo $filename; ?></a> </h4>
 				</div>
 				<input type="hidden" class="date" value="<?php echo $file_array['date']; ?>"/>
 				<input type="hidden" class="size" value="<?php echo $file_array['size'] ?>"/>
 				<input type="hidden" class="extension" value="<?php echo $extension_lower; ?>"/>
 				<input type="hidden" class="name" value="<?php echo $file_array['file_lcase']; ?>"/>
-				<div class="file-date"><?php echo date(trans('Date_type'),$file_array['date'])?></div>
+				<div class="file-date"><?php echo date(trans('Date_type'), $file_array['date'])?></div>
 				<div class="file-size"><?php echo makeSize($file_array['size'])?></div>
-				<div class='img-dimension'><?php if($is_img){ echo $img_width."x".$img_height; } ?></div>
+				<div class='img-dimension'><?php if ($is_img) {
+                        echo $img_width.'x'.$img_height;
+                    } ?></div>
 				<div class='file-extension'><?php echo $extension_lower; ?></div>
 				<figcaption>
 				    <form action="force_download.php" method="post" class="download-form" id="form<?php echo $nu; ?>">
@@ -919,41 +1007,53 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 					<input type="hidden" class="name_download" name="name" value="<?php echo $file?>"/>
 
 				    <a title="<?php echo trans('Download')?>" class="tip-right" href="javascript:void('')" onclick="$('#form<?php echo $nu; ?>').submit();"><i class="icon-download"></i></a>
-				    <?php if($is_img && $src_thumb!="" && $extension_lower!="tiff" && $extension_lower!="tif"){ ?>
-				    <a class="tip-right preview" title="<?php echo trans('Preview')?>" data-url="<?php echo $src;?>" data-toggle="lightbox" href="#previewLightbox"><i class=" icon-eye-open"></i></a>
-				    <?php }elseif(($is_video || $is_audio) && in_array($extension_lower,$jplayer_ext)){ ?>
-				    <a class="tip-right modalAV <?php if($is_audio){ echo "audio"; }else{ echo "video"; } ?>"
+				    <?php if ($is_img && $src_thumb != '' && $extension_lower != 'tiff' && $extension_lower != 'tif') { ?>
+				    <a class="tip-right preview" title="<?php echo trans('Preview')?>" data-url="<?php echo $src; ?>" data-toggle="lightbox" href="#previewLightbox"><i class=" icon-eye-open"></i></a>
+				    <?php } elseif (($is_video || $is_audio) && in_array($extension_lower, $jplayer_ext)) { ?>
+				    <a class="tip-right modalAV <?php if ($is_audio) {
+                        echo 'audio';
+                    } else {
+                        echo 'video';
+                    } ?>"
 					title="<?php echo trans('Preview')?>" data-url="ajax_calls.php?action=media_preview&title=<?php echo $filename; ?>&file=<?php echo $rfm_subfolder.$subdir.$file; ?>"
 					href="javascript:void('');" ><i class=" icon-eye-open"></i></a>
-						<?php }elseif($preview_text_files && in_array($extension_lower,$previewable_text_file_exts)){ ?>
+						<?php } elseif ($preview_text_files && in_array($extension_lower, $previewable_text_file_exts)) { ?>
 					    <a class="tip-right file-preview-btn" title="<?php echo trans('Preview')?>" data-url="ajax_calls.php?action=get_file&sub_action=preview&preview_mode=text&title=<?php echo $filename; ?>&file=<?php echo $rfm_subfolder.$subdir.$file; ?>"
 						href="javascript:void('');" ><i class=" icon-eye-open"></i></a>
-						<?php }elseif($googledoc_enabled && in_array($extension_lower,$googledoc_file_exts)){ ?>
+						<?php } elseif ($googledoc_enabled && in_array($extension_lower, $googledoc_file_exts)) { ?>
 					    <a class="tip-right file-preview-btn" title="<?php echo trans('Preview')?>" data-url="ajax_calls.php?action=get_file&sub_action=preview&preview_mode=google&title=<?php echo $filename; ?>&file=<?php echo $rfm_subfolder.$subdir.$file; ?>"
 						href="docs.google.com;" ><i class=" icon-eye-open"></i></a>
 
-						<?php }elseif($viewerjs_enabled && in_array($extension_lower,$viewerjs_file_exts)){ ?>
+						<?php } elseif ($viewerjs_enabled && in_array($extension_lower, $viewerjs_file_exts)) { ?>
 					    <a class="tip-right file-preview-btn" title="<?php echo trans('Preview')?>" data-url="ajax_calls.php?action=get_file&sub_action=preview&preview_mode=viewerjs&title=<?php echo $filename; ?>&file=<?php echo $rfm_subfolder.$subdir.$file; ?>"
 						href="docs.google.com;" ><i class=" icon-eye-open"></i></a>
 
-				    <?php }else{ ?>
+				    <?php } else { ?>
 				    <a class="preview disabled"><i class="icon-eye-open icon-white"></i></a>
 				    <?php } ?>
-				    <a href="javascript:void('')" class="tip-left edit-button rename-file-paths <?php if($rename_files && !$file_prevent_rename) echo "rename-file"; ?>" title="<?php echo trans('Rename')?>" data-path="<?php echo $rfm_subfolder.$subdir .$file; ?>">
- 				    <i class="icon-pencil <?php if(!$rename_files || $file_prevent_rename) echo 'icon-white'; ?>"></i></a>
+				    <a href="javascript:void('')" class="tip-left edit-button rename-file-paths <?php if ($rename_files && !$file_prevent_rename) {
+                        echo 'rename-file';
+                    } ?>" title="<?php echo trans('Rename')?>" data-path="<?php echo $rfm_subfolder.$subdir.$file; ?>">
+ 				    <i class="icon-pencil <?php if (!$rename_files || $file_prevent_rename) {
+                        echo 'icon-white';
+                    } ?>"></i></a>
 
-				    <a href="javascript:void('')" class="tip-left erase-button <?php if($delete_files && !$file_prevent_delete) echo "delete-file"; ?>" title="<?php echo trans('Erase')?>" data-confirm="<?php echo trans('Confirm_del'); ?>" data-path="<?php echo $rfm_subfolder.$subdir.$file; ?>">
- 				    <i class="icon-trash <?php if(!$delete_files || $file_prevent_delete) echo 'icon-white'; ?>"></i>
+				    <a href="javascript:void('')" class="tip-left erase-button <?php if ($delete_files && !$file_prevent_delete) {
+                        echo 'delete-file';
+                    } ?>" title="<?php echo trans('Erase')?>" data-confirm="<?php echo trans('Confirm_del'); ?>" data-path="<?php echo $rfm_subfolder.$subdir.$file; ?>">
+ 				    <i class="icon-trash <?php if (!$delete_files || $file_prevent_delete) {
+                        echo 'icon-white';
+                    } ?>"></i>
 				    </a>
 				    </form>
 				</figcaption>
 			</figure>
 		</li>
 			<?php
-			}
-		    }
+                }
+            }
 
-	?></div>
+    ?></div>
 	    </ul>
 	    <?php } ?>
 	</div>
@@ -962,9 +1062,9 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 <script>
     var files_prevent_duplicate = new Array();
     <?php
-    foreach ($files_prevent_duplicate as $key => $value): ?>
-        files_prevent_duplicate[<?php echo $key;?>] = '<?php echo $value; ?>';
-    <?php endforeach; ?>
+    foreach ($files_prevent_duplicate as $key => $value) { ?>
+        files_prevent_duplicate[<?php echo $key; ?>] = '<?php echo $value; ?>';
+    <?php } ?>
 </script>
 
     <!-- lightbox div start -->
@@ -1008,4 +1108,5 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
     <?php } ?>
 </body>
 </html>
-<?php }
+<?php
+}
