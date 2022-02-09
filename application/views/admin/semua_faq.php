@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 ?>
 
@@ -35,10 +37,10 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
               </thead>
               <tbody>
                <?php
-               
-               $no=1;
-               foreach($faq as $f){
-                echo "<tr>
+
+               $no = 1;
+               foreach ($faq as $f) {
+                   echo "<tr>
                   <td>$no</td>
                   <td>$f[pertanyaan]</td>
                   <td>
@@ -46,9 +48,9 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
                     <div class='btn btn-sm btn-danger hapus-faq' data-id='$f[id]'>Hapus</div>
                   </td>
                 </tr>";
-                $no++;
+                   $no++;
                }
-               
+
                ?>
               </tbody>
             </table>

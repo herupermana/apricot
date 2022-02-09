@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 ?>
 
@@ -35,7 +37,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
               <ul class="list-group list_kategori_produk konten-list" data-id="0">
 
-                <?php 
+                <?php
                   echo $hasil;
                 ?>
 

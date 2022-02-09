@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 ?>
 
@@ -38,12 +40,12 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
                   </div>
 
               <ul class="list-group group-kategori" style="margin-top:20px">
-            <?php 
+            <?php
 
               foreach ($hasil as $value) {
-                $show=$value['aktif']=='Y'?"<i data-id='".$value['id']."' class='fa fa-eye disable-kategori'></i>":"<i data-id='".$value['id']."' class='fa fa-eye enable-kategori' ></i>";
+                  $show = $value['aktif'] == 'Y' ? "<i data-id='".$value['id']."' class='fa fa-eye disable-kategori'></i>" : "<i data-id='".$value['id']."' class='fa fa-eye enable-kategori' ></i>";
 
-                echo "<li class='list-group-item' data-id='".$value['id']."'>
+                  echo "<li class='list-group-item' data-id='".$value['id']."'>
 
                 <span data-toggle='tooltip' data-placement='top' title='Klik untuk mengedit' data-id='".$value['id']."' class='kategori-nama-wrap' >".$value['nama_kategori']."</span>
 

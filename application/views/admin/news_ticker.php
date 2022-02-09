@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 ?>
 
@@ -55,26 +57,25 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  				</thead>
  				<tbody class='body-table-berita'>
 
-<?php 
-$no=1;
-	foreach ($hasil as $berita) {
-		echo "<tr data-id='$berita[id]'>";
-		echo "<th class='nomor'>$no</th>";
-		echo "<td>
+<?php
+$no = 1;
+    foreach ($hasil as $berita) {
+        echo "<tr data-id='$berita[id]'>";
+        echo "<th class='nomor'>$no</th>";
+        echo "<td>
 				<span class='berita-text editable-span' data-id='$berita[id]'>$berita[berita]</span>
 				<input type='text' class='form-control form-berita sembunyi' data-id='$berita[id]' value='$berita[berita]' />
-			</td>";	
-		echo "<td>
+			</td>";
+        echo "<td>
 				<span class='link-text editable-span' data-id='$berita[id]'>$berita[link]</span>
 				<input type='text' class='form-control form-link sembunyi' data-id='$berita[id]' value='$berita[link]' />
 			</td>";
-		echo "<td><i class='fa hapus-news fa-close hapus-icon' data-id='$berita[id]'></i></td>";
+        echo "<td><i class='fa hapus-news fa-close hapus-icon' data-id='$berita[id]'></i></td>";
 
+        echo '</tr>';
 
-		echo "</tr>";
-
-		$no++;
-	}
+        $no++;
+    }
 ?>
 
  				</tbody>

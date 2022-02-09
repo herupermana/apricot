@@ -1,18 +1,20 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 class Banner_depan extends CI_Model
 {
-	function __construct(){
-		parent::__construct();
-	}
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
+    public function get_banner()
+    {
+        $query = $this->db->query('SELECT * FROM banner_depan ORDER BY id DESC');
 
-	function get_banner(){
-
-		$query=$this->db->query("SELECT * FROM banner_depan ORDER BY id DESC");
-
-		return $query->result_array();
-
-	}
+        return $query->result_array();
+    }
 }

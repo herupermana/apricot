@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 ?>
 
       <div class="content-wrapper" >
@@ -31,17 +33,17 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
             <tbody>
 
-<?php 
-  $no=1;
-  foreach ($kontakmasuk AS $kotak) {
-    $style=$kotak['dibaca']=="N"?"font-weight:bold":"";
-    echo "<tr style='$style' data-id='$kotak[id]' >
+<?php
+  $no = 1;
+  foreach ($kontakmasuk as $kotak) {
+      $style = $kotak['dibaca'] == 'N' ? 'font-weight:bold' : '';
+      echo "<tr style='$style' data-id='$kotak[id]' >
 
             <td>$kotak[nama]</td>      
             <td>$kotak[email]</td>      
             <td>$kotak[phone]</td>      
             <td>$kotak[tanggal]</td>      
-            <td>".word_limiter($kotak['pesan'],7)."...</td>      
+            <td>".word_limiter($kotak['pesan'], 7)."...</td>      
             <td> 
             <i style='color:green;cursor:pointer' class='fa lihat-pesan fa-eye' data-id='$kotak[id]' ></i>  &nbsp;
             <i class='fa hapus-pesan fa-close hapus-icon' data-id='$kotak[id]' ></i> 

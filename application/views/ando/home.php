@@ -8,26 +8,25 @@
 
             		<?php
 
-            		$banner_hitung=0;
-            		foreach ($banner_depan as $key => $value) {
-            			echo "<div class='sl-slide' data-orientation='horizontal' data-slice1-rotation='-25' data-slice2-rotation='-25' data-slice1-scale='2' data-slice2-scale='2'>";
-            				echo "<div class='bg-img  bg-img-$banner_hitung' style='background-attachment: fixed;background-image: url($value[gambar])'> </div>";
+                    $banner_hitung = 0;
+                    foreach ($banner_depan as $key => $value) {
+                        echo "<div class='sl-slide' data-orientation='horizontal' data-slice1-rotation='-25' data-slice2-rotation='-25' data-slice1-scale='2' data-slice2-scale='2'>";
+                        echo "<div class='bg-img  bg-img-$banner_hitung' style='background-attachment: fixed;background-image: url($value[gambar])'> </div>";
 
+                        echo"<div class='slide-caption'>";
+                        echo"<div class='caption-content'>";
+                        echo "<h2 class='wow animated fadeInRight'>$value[header]</h2>";
+                        echo "<span class='wow animated fadeInDown'>$value[caption]</span>";
+                        echo "<a class='btn btn-blue btn-effect' href='$value[link_href]'>$value[link_text]</a>";
+                        echo'</div>';
 
-            				echo"<div class='slide-caption'>";
-            				 echo"<div class='caption-content'>";
-            				  echo "<h2 class='wow animated fadeInRight'>$value[header]</h2>";
-            				  echo "<span class='wow animated fadeInDown'>$value[caption]</span>";
-            				  echo "<a class='btn btn-blue btn-effect' href='$value[link_href]'>$value[link_text]</a>";
-            				 echo"</div>";
+                        echo'</div>';
 
-            				echo"</div>";
+                        echo '</div>';
+                        $banner_hitung++;
+                    }
 
-            			echo "</div>";
-            			$banner_hitung++;
-            		}
-
-            		 ?>
+                     ?>
 
 
 
@@ -53,10 +52,10 @@
 
 
 
-					<?php for ($i=1; $i <= $banner_hitung ; $i++) { 
-						$curent=$i==1?"nav-dot-current":"";
-						echo "<span class='$curent'></span>";
-					} ?>
+					<?php for ($i = 1; $i <= $banner_hitung; $i++) {
+                         $curent = $i == 1 ? 'nav-dot-current' : '';
+                         echo "<span class='$curent'></span>";
+                     } ?>
 				</nav>
 
 
@@ -114,17 +113,17 @@
 
                                 <div class='overlay-effect'>
                                <h4> $value[judul] </h4>
-                               <P>".potong_text(reversequote($value['isi'],'all'),120)."</P>
-                               <a class='btn btn-border btn-effect' href='".artikel_url($value['id'],$value['slug'])."'>Baca</a>
+                               <P>".potong_text(reversequote($value['isi'], 'all'), 120)."</P>
+                               <a class='btn btn-border btn-effect' href='".artikel_url($value['id'], $value['slug'])."'>Baca</a>
                                 </div>
 
                                      ";
-                            echo "<img class='headImg' src='".img_artikel_url($value['foto'],true)."' alt='$value[judul]' />";
+                            echo "<img class='headImg' src='".img_artikel_url($value['foto'], true)."' alt='$value[judul]' />";
                             echo     "
                              <div class='caption-area'>
-                               <a href='".artikel_url($value['id'],$value['slug'])."'><h4> ".potong_text($value['judul'],40)."</h4></a>";
-                           echo "<span class='angka tanggal-artikel'><i class='fa fa-calendar'></i>&nbsp; ".format_tanggal($value['tanggal'])."</span>";
-                           echo" 
+                               <a href='".artikel_url($value['id'], $value['slug'])."'><h4> ".potong_text($value['judul'], 40).'</h4></a>';
+                            echo "<span class='angka tanggal-artikel'><i class='fa fa-calendar'></i>&nbsp; ".format_tanggal($value['tanggal']).'</span>';
+                            echo" 
                            <span class='author-artikel'>
                            <i class='fa fa-user'></i>&nbsp; $value[nama_admin]
                            </span>
@@ -233,23 +232,23 @@
                               <div class='social_area'>
                               <i class='fa fa-facebook-square'></i> <i class=''></i> <i class='fa fa-twitter-square'></i> <i class='fa fa-linkedin-square'></i>
                               </div>
-                              <div class='area'>".potong_text($val['isi'],600)."</div>
-                         <a href='".artikel_url($val['id'],$val['slug'])."' class='btn btn-effect btn-border baca-btn'>Baca</a>     
+                              <div class='area'>".potong_text($val['isi'], 600)."</div>
+                         <a href='".artikel_url($val['id'], $val['slug'])."' class='btn btn-effect btn-border baca-btn'>Baca</a>     
                         </div>";
                         echo "<div class='item-box'>";
-                        echo "<img class='' src='".img_artikel_url($val['foto'],true)."' alt='$val[judul]' />";
-                        echo "<span class='judul'><a href='".artikel_url($val['id'],$val['slug'])."'><h4>$val[judul].</h4></a></span>"; 
+                        echo "<img class='' src='".img_artikel_url($val['foto'], true)."' alt='$val[judul]' />";
+                        echo "<span class='judul'><a href='".artikel_url($val['id'], $val['slug'])."'><h4>$val[judul].</h4></a></span>";
                         echo "<span class='info'>";
-                        echo "<i class='fa fa-calendar'></i>&nbsp; <span class='jam'>".format_tanggal($val['tanggal'])."</span>";
+                        echo "<i class='fa fa-calendar'></i>&nbsp; <span class='jam'>".format_tanggal($val['tanggal']).'</span>';
                         echo "<span class='author'>
                             <i class='fa fa-user'></i> &nbsp; $val[nama_admin]
                         </span>";
-                        echo "</span>";
+                        echo '</span>';
                         echo "<span class='konten'>";
-                        echo potong_text(reversequote($val['isi'],'all'),150);
-                        echo "</span>";
-                        echo "</div>";
-                        echo "</div>";
+                        echo potong_text(reversequote($val['isi'], 'all'), 150);
+                        echo '</span>';
+                        echo '</div>';
+                        echo '</div>';
                     }
 
                      ?>

@@ -1,5 +1,6 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------
@@ -40,8 +41,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
-$autoload['packages'] = array();
-
+$autoload['packages'] = [];
 
 /*
 | -------------------------------------------------------------------
@@ -60,8 +60,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
 
-$autoload['libraries'] = array('session','database');
-
+$autoload['libraries'] = ['session', 'database'];
 
 /*
 | -------------------------------------------------------------------
@@ -76,8 +75,7 @@ $autoload['libraries'] = array('session','database');
 |	$autoload['drivers'] = array('cache');
 */
 
-$autoload['drivers'] = array('cache');
-
+$autoload['drivers'] = ['cache'];
 
 /*
 | -------------------------------------------------------------------
@@ -90,8 +88,7 @@ $autoload['drivers'] = array('cache');
 | Jangan meload helper URL
 */
 
-$autoload['helper'] = array('date');
-
+$autoload['helper'] = ['date'];
 
 /*
 | -------------------------------------------------------------------
@@ -106,8 +103,7 @@ $autoload['helper'] = array('date');
 |
 */
 
-$autoload['config'] = array();
-
+$autoload['config'] = [];
 
 /*
 | -------------------------------------------------------------------
@@ -122,8 +118,7 @@ $autoload['config'] = array();
 |
 */
 
-$autoload['language'] = array();
-
+$autoload['language'] = [];
 
 /*
 | -------------------------------------------------------------------
@@ -139,4 +134,4 @@ $autoload['language'] = array();
 |	$autoload['model'] = array('first_model' => 'first');
 */
 
-$autoload['model'] = array();
+$autoload['model'] = [];

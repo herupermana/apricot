@@ -1,16 +1,15 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class Testing extends AN_Apricot
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
-
-	function __construct(){
-		parent::__construct();
-  }
-  
-  function index(){
-
-  }
-
+    public function index()
+    {
+    }
 }

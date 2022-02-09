@@ -1,10 +1,10 @@
 <?php
-defined('BASEPATH') OR exit('Eiits! Jangan coba coba Mblo!!!!');
+defined('BASEPATH') or exit('Eiits! Jangan coba coba Mblo!!!!');
 ?>
 <!DOCTYPE html>
 <html lang="id-ID" prefix="og: http://ogp.me/ns#">
 <head>
-	<title><?php echo $informasi["title"] ?></title>
+	<title><?php echo $informasi['title'] ?></title>
 
      <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -12,14 +12,14 @@ defined('BASEPATH') OR exit('Eiits! Jangan coba coba Mblo!!!!');
      <meta name="keywords" content="<?php echo $informasi['meta_keyword']; ?>" />
      <meta name="author" content="<?php echo $informasi['author']; ?>" />
 
-     <meta property="og:url" content="<?php echo $informasi['og-url'];  ?>" />
+     <meta property="og:url" content="<?php echo $informasi['og-url']; ?>" />
      <meta property="og:title" content="<?php echo $informasi['og-title']; ?>" />
-     <meta property="og:description" content="<?php echo $informasi["og-description"]; ?>" />
+     <meta property="og:description" content="<?php echo $informasi['og-description']; ?>" />
      <meta property="og:site_name" content="<?php echo $informasi['og-site_name']; ?>" />
      <meta property="og:image" content="<?php echo $informasi['og-image']; ?>" />
      <meta property="og:image:type" content="image/jpeg" />
      <meta property="og:type" content="<?php echo $informasi['og-type']; ?>" />
-<?php if($informasi["current_page"]=="detail-artikel"){ ?>
+<?php if ($informasi['current_page'] == 'detail-artikel') { ?>
      <meta property="article:author" content="<?php echo $informasi['article-author']; ?>" />
      <meta property="article:publisher" content="<?php echo $informasi['article-publisher']; ?>" />
      <meta property="article:published_time" content="<?php echo $informasi['article-published_time']; ?>" />
@@ -75,55 +75,51 @@ defined('BASEPATH') OR exit('Eiits! Jangan coba coba Mblo!!!!');
 	<link rel="stylesheet" type="text/css" href="<?php echo assets_url('css/custom.css') ?>" />
 
   <?php
-    if($informasi['current_page'] == 'faq'){
-    
-      $schema = array();
-      $schema['@context'] = "http://schema.org";
-      $schema['@graph'] = array();
+    if ($informasi['current_page'] == 'faq') {
+        $schema = [];
+        $schema['@context'] = 'http://schema.org';
+        $schema['@graph'] = [];
 
-      foreach($faq as $f){
-        $schema['@graph'][]= array(
-          '@type' => 'Question',
-          'text' => $f['pertanyaan'],
-          'dateCreated' => $f['tanggal'],
-          'acceptedAnswer' => array(
-            '@type' => 'Answer',
-            'text' => $f['jawaban'],
-            'dateCreated' =>  $f['tanggal']
-          ),
-        );
-      }
+        foreach ($faq as $f) {
+            $schema['@graph'][] = [
+                '@type'          => 'Question',
+                'text'           => $f['pertanyaan'],
+                'dateCreated'    => $f['tanggal'],
+                'acceptedAnswer' => [
+                    '@type'       => 'Answer',
+                    'text'        => $f['jawaban'],
+                    'dateCreated' => $f['tanggal'],
+                ],
+            ];
+        }
 
-    echo '<script type="application/ld+json">';
-    echo json_encode($schema,JSON_PRETTY_PRINT);
-    echo '</script>';
+        echo '<script type="application/ld+json">';
+        echo json_encode($schema, JSON_PRETTY_PRINT);
+        echo '</script>';
+    } elseif ($informasi['current_page'] == 'detail-faq') {
+        $schema = [];
+        $schema['@context'] = 'http://schema.org';
+        $schema['@graph'] = [];
 
-    } else if($informasi['current_page'] == 'detail-faq'){
-      $schema = array();
-      $schema['@context'] = "http://schema.org";
-      $schema['@graph'] = array();
+        $schema['@graph'][] = [
+            '@type'          => 'Question',
+            'text'           => $faq['pertanyaan'],
+            'dateCreated'    => $faq['tanggal'],
+            'acceptedAnswer' => [
+                '@type'       => 'Answer',
+                'text'        => $faq['jawaban'],
+                'dateCreated' => $faq['tanggal'],
+            ],
+        ];
 
-      
-        $schema['@graph'][]= array(
-          '@type' => 'Question',
-          'text' => $faq['pertanyaan'],
-          'dateCreated' => $faq['tanggal'],
-          'acceptedAnswer' => array(
-            '@type' => 'Answer',
-            'text' => $faq['jawaban'],
-            'dateCreated' =>  $faq['tanggal']
-          ),
-        );
-    
-
-    echo '<script type="application/ld+json">';
-    echo json_encode($schema,JSON_PRETTY_PRINT);
-    echo '</script>';
+        echo '<script type="application/ld+json">';
+        echo json_encode($schema, JSON_PRETTY_PRINT);
+        echo '</script>';
     }
   ?>
 
 	<style type="text/css">
-		<?php echo $informasi["custom_css"]; ?>
+		<?php echo $informasi['custom_css']; ?>
 	</style>
 
 
@@ -160,7 +156,7 @@ defined('BASEPATH') OR exit('Eiits! Jangan coba coba Mblo!!!!');
 					
 					<!-- logo -->
 					<h2 class="navbar-brand">
-						<a href="<?php echo baseURL() ?>"><?php echo $informasi["nama"]; ?></a>
+						<a href="<?php echo baseURL() ?>"><?php echo $informasi['nama']; ?></a>
 					</h2>
 					<!-- /logo -->
                 </div>
@@ -168,12 +164,12 @@ defined('BASEPATH') OR exit('Eiits! Jangan coba coba Mblo!!!!');
 				<!-- main nav -->
                 <nav class="collapse navbar-collapse navbar-right" role="navigation">
                     <ul id="nav" class="nav navbar-nav" itemscope itemtype="http://schema.org/SiteNavigationElement" >
-                       <?php 
+                       <?php
 
-                       foreach ($menu_horizontal  AS $menu) {
-                       echo "<li itemprop='name'>";
-                       echo "<a  itemprop='url' href='$menu[url]' target='$menu[target]' >$menu[nama]</a>";
-                       echo "</li>";
+                       foreach ($menu_horizontal  as $menu) {
+                           echo "<li itemprop='name'>";
+                           echo "<a  itemprop='url' href='$menu[url]' target='$menu[target]' >$menu[nama]</a>";
+                           echo '</li>';
                        }
 
                        ?>
@@ -193,11 +189,10 @@ defined('BASEPATH') OR exit('Eiits! Jangan coba coba Mblo!!!!');
 <?php
 
 //jika bukan halaman Home
-if($informasi["current_page"]!='home'){
-
-  echo "<div class='section' id='main-konten'>";
-  echo "<div class='container'>";
-  echo "<div class='row'>";
+if ($informasi['current_page'] != 'home') {
+    echo "<div class='section' id='main-konten'>";
+    echo "<div class='container'>";
+    echo "<div class='row'>";
 }
 
 ?>

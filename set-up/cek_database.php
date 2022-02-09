@@ -1,19 +1,14 @@
-<?php 
+<?php
 
-$host=$_POST['host'];
-$database=$_POST['nama'];
-$user=$_POST['user'];
-$password=$_POST['password'];
+$host = $_POST['host'];
+$database = $_POST['nama'];
+$user = $_POST['user'];
+$password = $_POST['password'];
 
-try{
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$database", $user, $password, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
-	$pdo= new PDO("mysql:host=$host;dbname=$database", $user, $password,array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-
-	echo json_encode(array("status"=>"success"));
-
-} catch(PDOException $e){
-
-	echo json_encode(array('status'=>'error','pesan'=>$e->getMessage()));
+    echo json_encode(['status'=>'success']);
+} catch (PDOException $e) {
+    echo json_encode(['status'=>'error', 'pesan'=>$e->getMessage()]);
 }
-
-?>

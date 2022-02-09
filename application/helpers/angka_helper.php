@@ -1,41 +1,34 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
 
+defined('BASEPATH') or exit('No direct script access allowed');
 
+function terbilang($angka)
+{
+    $bilangan = [1=>[0=>'satu', 1=>'se'], 2=>'dua', 3=>'tiga', 4=>'empat', 5=>'lima', 6=>'enam', 7=>'tujuh', 8=>'delapan', 9=>'sembilan'];
 
-function terbilang($angka){
+    $satuan = [0=>'', 1=>'puluh', 2=>'ratus', 3=>'ribu', 4=>'juta', 5=>'miliar'];
 
-	$bilangan= array(1=>array(0=>"satu",1=>"se"),2=>"dua",3=>"tiga",4=>"empat",5=>"lima",6=>"enam",7=>"tujuh",8=>"delapan",9=>"sembilan");
+    $set = str_split($angka);
 
-	$satuan= array(0=>"",1=>"puluh",2=>"ratus",3=>"ribu",4=>"juta",5=>"miliar");
-	
+    $jml = strlen($angka);
 
-	$set=str_split($angka);
+    $terbilang = '';
 
-	$jml=strlen($angka);
+    $hitung = 0;
 
-	$terbilang="";
-
-	$hitung=0;
-
-	foreach ($set as  $value) {
-		
-		if($jml>=16 AND $jml<=($max=18)){
-			return $jml;
-		} else if($jml>=13 AND $jml<=($max=15)){
-			//trilun
-		} else if($jml>=10 AND $jml<=($max=12)){
-			//miliar
-		} else if($jml>=7 AND $jml<=($max=9)){
-			//juta
-		}  else if($jml>=4 AND $jml<=($max=6)){
-			//ribu
-		} else {
-			//ratus
-		} 
-
-	}
-
+    foreach ($set as  $value) {
+        if ($jml >= 16 and $jml <= ($max = 18)) {
+            return $jml;
+        } elseif ($jml >= 13 and $jml <= ($max = 15)) {
+            //trilun
+        } elseif ($jml >= 10 and $jml <= ($max = 12)) {
+            //miliar
+        } elseif ($jml >= 7 and $jml <= ($max = 9)) {
+            //juta
+        } elseif ($jml >= 4 and $jml <= ($max = 6)) {
+            //ribu
+        } else {
+            //ratus
+        }
+    }
 }
-
-

@@ -1,31 +1,31 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
 
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class Nativesession
 {
     public function __construct()
     {
-       @ session_start();
+        @session_start();
     }
 
-    public function set( $key, $value )
+    public function set($key, $value)
     {
         $_SESSION[$key] = $value;
     }
 
-    public function get( $key )
+    public function get($key)
     {
-        return isset( $_SESSION[$key] ) ? $_SESSION[$key] : null;
+        return isset($_SESSION[$key]) ? $_SESSION[$key] : null;
     }
 
-    public function regenerateId( $delOld = false )
+    public function regenerateId($delOld = false)
     {
-        session_regenerate_id( $delOld );
+        session_regenerate_id($delOld);
     }
 
-    public function delete( $key )
+    public function delete($key)
     {
-        unset( $_SESSION[$key] );
+        unset($_SESSION[$key]);
     }
 }

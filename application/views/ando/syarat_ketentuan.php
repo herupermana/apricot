@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 ?>
 
 	<div class='col-md-12' id="header-page">
@@ -10,7 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			<div class="artikel">
 				<div class="konten">
-					<?php echo reversequote($informasi["terms_conditions"],'all'); ?>
+					<?php echo reversequote($informasi['terms_conditions'], 'all'); ?>
 					
 				</div>
 			</div>

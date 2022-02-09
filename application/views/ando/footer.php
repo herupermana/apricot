@@ -1,92 +1,82 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 //jika bukan halaman Home
-if($informasi["current_page"]!='home'){
+if ($informasi['current_page'] != 'home') {
+    echo "<div class='col-md-4 right-wripper'>";
 
-echo "<div class='col-md-4 right-wripper'>";
+    echo "<div class='right-side'>";
 
-echo "<div class='right-side'>";
-
-echo "<div class='right-side-konten' style='margin-bottom:50px;'>";
-echo "<form method='post' action='".baseURL("form_visitors/search_article")."' class='form-group has-feedback'> 
+    echo "<div class='right-side-konten' style='margin-bottom:50px;'>";
+    echo "<form method='post' action='".baseURL('form_visitors/search_article')."' class='form-group has-feedback'> 
 
   <input type='text' name='keyword' class='form-control search-form' placeholder='Pencarian artikel...' /><span class='fa fa-search form-control-feedback'></span>
 
 </form>";
-echo "</div>";
+    echo '</div>';
 
+    echo "<div class='right-side-konten'>";
+    echo '<h4><span>Follow Us</span></h4>';
 
-echo "<div class='right-side-konten'>";
-echo "<h4><span>Follow Us</span></h4>";
+    echo "<a href='https://www.facebook.com/JESUSisMySAVIOR.NotMyReligion' target='_blank' >";
+    echo "<div class='sosial-button sosial-facebook'>";
+    echo '</div>';
+    echo '</a>';
 
-echo "<a href='https://www.facebook.com/JESUSisMySAVIOR.NotMyReligion' target='_blank' >";
-echo "<div class='sosial-button sosial-facebook'>";
-echo "</div>";
-echo "</a>";
+    echo "<a href='https://twitter.com/gantengsintetis' target='_blank' >";
+    echo "<div class='sosial-button sosial-twitter'>";
+    echo '</div>';
+    echo '</a>';
 
-echo "<a href='https://twitter.com/gantengsintetis' target='_blank' >";
-echo "<div class='sosial-button sosial-twitter'>";
-echo "</div>";
-echo "</a>";
+    echo "<a href='https://www.instagram.com/ando_poluan' target='_blank' >";
+    echo "<div class='sosial-button sosial-instagram'>";
+    echo '</div>';
+    echo '</a>';
 
-echo "<a href='https://www.instagram.com/ando_poluan' target='_blank' >";
-echo "<div class='sosial-button sosial-instagram'>";
-echo "</div>";
-echo "</a>";
+    echo "<a href='https://plus.google.com/116695949876921825285' target='_blank' >";
+    echo "<div class='sosial-button sosial-google'>";
+    echo '</div>';
+    echo '</a>';
 
-echo "<a href='https://plus.google.com/116695949876921825285' target='_blank' >";
-echo "<div class='sosial-button sosial-google'>";
-echo "</div>";
-echo "</a>";
+    echo '</div>';
 
-echo "</div>";
+    echo "<div class='right-side-konten'>";
+    echo '<h4><span>Artikel Populer</span></h4>';
 
-
-echo "<div class='right-side-konten'>";
-echo "<h4><span>Artikel Populer</span></h4>";
-
-foreach ($artikel_populer as $artikel) {
-  
-echo "<a href='".artikel_url($artikel['id'],$artikel['slug'])."'><div class='populer-artikel-right-box media'>";
-echo "<div class='img-box media-left'>
- <img src='".img_artikel_url($artikel['foto'],true)."' alt='$artikel[judul]'/>
+    foreach ($artikel_populer as $artikel) {
+        echo "<a href='".artikel_url($artikel['id'], $artikel['slug'])."'><div class='populer-artikel-right-box media'>";
+        echo "<div class='img-box media-left'>
+ <img src='".img_artikel_url($artikel['foto'], true)."' alt='$artikel[judul]'/>
  </div>";
 
- echo "<div class='media-body konten-body'>";
- echo "<h5>$artikel[judul]</h5>";
- echo "</div>";
+        echo "<div class='media-body konten-body'>";
+        echo "<h5>$artikel[judul]</h5>";
+        echo '</div>';
 
-echo "</div></a>";
+        echo '</div></a>';
+    }
 
+    echo '</div>';
 
-}
+    echo "<div class='right-side-konten'>";
+    echo '<h4><span>Tags</span></h4>';
 
-echo "</div>";
+    foreach ($tags as $tag) {
+        echo "<a href='".tag_url($tag['id'], $tag['slug'])."'><span class='label label-info label-tag'>$tag[nama]</span></a>";
+    }
 
+    echo '</div>';
 
-echo "<div class='right-side-konten'>";
-echo "<h4><span>Tags</span></h4>";
+    echo "<div class='right-side-konten'>";
+    echo '</div>';
 
-foreach ($tags as $tag) {
-  echo "<a href='".tag_url($tag['id'],$tag['slug'])."'><span class='label label-info label-tag'>$tag[nama]</span></a>";
-}
+    echo '</div>'; //.right-side
 
-echo "</div>";
+    echo '</div>'; //.col-md-4
 
-echo "<div class='right-side-konten'>";
-echo "</div>";
-
-echo "</div>"; //.right-side
-
-echo "</div>"; //.col-md-4
-
-
-
-  echo "</div>"; //tutup class .row
-  echo "</div>"; //tutup class .container
-  echo "</div>"; //tutup id #main-konten
-
+    echo '</div>'; //tutup class .row
+  echo '</div>'; //tutup class .container
+  echo '</div>'; //tutup id #main-konten
 }
 
 ?>
@@ -101,9 +91,9 @@ echo "</div>"; //.col-md-4
       <h4>Gallery <small> - Kategori Galeri</small></h4>
       <div class='konten-footer'>
         <ul>
-        <?php 
+        <?php
             foreach ($kategori_galeri as $galeri) {
-             echo "<li><a href='".kategori_galeri_url($galeri['id'],$galeri['slug'])."'><i class='fa fa-angle-right bullet-li'></i> $galeri[nama]</a></li>";
+                echo "<li><a href='".kategori_galeri_url($galeri['id'], $galeri['slug'])."'><i class='fa fa-angle-right bullet-li'></i> $galeri[nama]</a></li>";
             }
         ?>
         </ul>
@@ -121,7 +111,7 @@ echo "</div>"; //.col-md-4
         <?php
 
         foreach ($kategori_artikel as $kategori) {
-          echo "<li><a href='".kategori_url($kategori['id'],$kategori['slug'])."'><i class='fa fa-angle-right bullet-li'></i> $kategori[nama]</a></li>";
+            echo "<li><a href='".kategori_url($kategori['id'], $kategori['slug'])."'><i class='fa fa-angle-right bullet-li'></i> $kategori[nama]</a></li>";
         }
 
          ?>
@@ -242,16 +232,16 @@ echo "</div>"; //.col-md-4
 <script type="text/javascript" src="<?php echo assets_url('bootstrap/js/bootstrap.min.js'); ?>"></script>
 
 
-<script type="text/javascript" src="<?php echo assets_url("js/jquery.singlePageNav.min.js") ?>"></script>
+<script type="text/javascript" src="<?php echo assets_url('js/jquery.singlePageNav.min.js') ?>"></script>
 
 <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>-->
-<script type="text/javascript" src="<?php echo assets_url("fancybox/source/jquery.fancybox.js") ?>"></script>
-<script type="text/javascript" src="<?php echo assets_url("fancybox/source/helpers/jquery.fancybox-buttons.js") ?>"></script>
-<script type="text/javascript" src="<?php echo assets_url("fancybox/source/helpers/jquery.fancybox-media.js") ?>"></script>
-<script type="text/javascript" src="<?php echo assets_url("fancybox/source/helpers/jquery.fancybox-thumbs.js") ?>"></script>
+<script type="text/javascript" src="<?php echo assets_url('fancybox/source/jquery.fancybox.js') ?>"></script>
+<script type="text/javascript" src="<?php echo assets_url('fancybox/source/helpers/jquery.fancybox-buttons.js') ?>"></script>
+<script type="text/javascript" src="<?php echo assets_url('fancybox/source/helpers/jquery.fancybox-media.js') ?>"></script>
+<script type="text/javascript" src="<?php echo assets_url('fancybox/source/helpers/jquery.fancybox-thumbs.js') ?>"></script>
 
 
-<script type="text/javascript" src="<?php echo assets_url("jQuery.TosRUs/src/js/jquery.tosrus.min.all.js") ?>"></script>
+<script type="text/javascript" src="<?php echo assets_url('jQuery.TosRUs/src/js/jquery.tosrus.min.all.js') ?>"></script>
 
 
 <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>-->
@@ -260,9 +250,9 @@ echo "</div>"; //.col-md-4
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 
-<script type="text/javascript" src="<?php echo assets_url("js/jquery.slitslider.js") ?>"></script>
+<script type="text/javascript" src="<?php echo assets_url('js/jquery.slitslider.js') ?>"></script>
 
-<script type="text/javascript" src="<?php echo assets_url("js/jquery.ba-cond.min.js") ?>"></script>
+<script type="text/javascript" src="<?php echo assets_url('js/jquery.ba-cond.min.js') ?>"></script>
 
 <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.js"></script>-->
 <script type="text/javascript" src="<?php echo assets_url('js/wow.min.js'); ?>"></script>
@@ -270,7 +260,7 @@ echo "</div>"; //.col-md-4
 <script type="text/javascript" src="<?php echo assets_url('js/masonry.pkgd.min.js'); ?>"></script>
 
 
-<script type="text/javascript" src="<?php echo assets_url("js/main.js") ?>"></script>
+<script type="text/javascript" src="<?php echo assets_url('js/main.js') ?>"></script>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.3.8/packaged/jquery.noty.packaged.min.js"></script>
 
@@ -426,7 +416,7 @@ $("#share").jsSocials({
 
 <?php echo $informasi['custom_javascript']; ?>
 
-<?php echo $google_analytics["script"]; ?>
+<?php echo $google_analytics['script']; ?>
 
 </script>
 

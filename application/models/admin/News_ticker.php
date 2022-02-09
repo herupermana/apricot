@@ -1,16 +1,18 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class News_ticker extends CI_Model
 {
-	function __construct(){
-		parent::__construct();
-	}
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
+    public function get_news()
+    {
+        $query = $this->db->query('SELECT * FROM news_ticker ORDER BY id DESC');
 
-	function get_news(){
-		$query=$this->db->query("SELECT * FROM news_ticker ORDER BY id DESC");
-
-		return $query->result_array();
-	}
+        return $query->result_array();
+    }
 }

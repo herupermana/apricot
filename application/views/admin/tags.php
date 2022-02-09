@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 ?>
 
 
@@ -55,8 +57,8 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 						</thead>
 						<tbody>
 							<?php
-							echo $hasil; 
-							?>
+                            echo $hasil;
+                            ?>
 						</tbody>
 						<tfoot>
 							<tr>

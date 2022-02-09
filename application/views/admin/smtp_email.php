@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 ?>
 
@@ -54,7 +56,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
               <div class="form-group">
               <?php
 
-                $checked=$smtp['ssl_connection']=="Y"?"checked":"";
+                $checked = $smtp['ssl_connection'] == 'Y' ? 'checked' : '';
 
                ?>
 

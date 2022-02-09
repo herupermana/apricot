@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 ?>
 
  <div class="content-wrapper" style='min-height: 800px' >
@@ -34,14 +34,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           						</label>
           						<select id="tema" class="form-control">
           							<option value='0'>--pilih tema--</option>
-          							<?php 
+          							<?php
 
-          								foreach ($temas as $tema) {
-          									
-          									echo "<option value='$tema[id]'>$tema[nama_tema]</option>";
-
-          								}
-          							 ?>
+                                          foreach ($temas as $tema) {
+                                              echo "<option value='$tema[id]'>$tema[nama_tema]</option>";
+                                          }
+                                       ?>
           						</select>
           					</div>
 

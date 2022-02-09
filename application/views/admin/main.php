@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 ?>
 
      <!-- Content Wrapper. Contains page content -->
@@ -101,11 +101,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="box-body">
 
           <table class="table table-striped">
-            <?php 
+            <?php
 
-            foreach ($data["artikel_terbaru"] as $artikel ) {
-               $label=$artikel['artikel_status']=='draft'?"label-warning":"label-primary";
-               echo "<tr><td style='font-family: \"Source Sans Pro\" ;'><a style='color:#000; ' href='".base_url("admin/artikel/$artikel[artikel_id]")."'><strong>".character_limiter($artikel['artikel_judul'],75)."</strong></a>
+            foreach ($data['artikel_terbaru'] as $artikel) {
+                $label = $artikel['artikel_status'] == 'draft' ? 'label-warning' : 'label-primary';
+                echo "<tr><td style='font-family: \"Source Sans Pro\" ;'><a style='color:#000; ' href='".base_url("admin/artikel/$artikel[artikel_id]")."'><strong>".character_limiter($artikel['artikel_judul'], 75)."</strong></a>
 
                <br><span class='label pull-right $label'>$artikel[artikel_status]</span>
 
@@ -129,11 +129,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
         <div class="box-body">
           <table class="table table-striped">
-            <?php 
+            <?php
 
-            foreach ($data["hit_artikel"] as $artikel ) {
-               $label=$artikel['artikel_status']=='draft'?"label-warning":"label-info";
-               echo "<tr><td style='font-family: \"Source Sans Pro\" ;'><span class='badge badge-info'>$artikel[artikel_dibaca]x</span> <a style='color:#00a65a ; ' href='".base_url("admin/artikel/$artikel[artikel_id]")."'><strong>".character_limiter($artikel['artikel_judul'],70)."</strong></a> 
+            foreach ($data['hit_artikel'] as $artikel) {
+                $label = $artikel['artikel_status'] == 'draft' ? 'label-warning' : 'label-info';
+                echo "<tr><td style='font-family: \"Source Sans Pro\" ;'><span class='badge badge-info'>$artikel[artikel_dibaca]x</span> <a style='color:#00a65a ; ' href='".base_url("admin/artikel/$artikel[artikel_id]")."'><strong>".character_limiter($artikel['artikel_judul'], 70)."</strong></a> 
 
                <br><span class='label pull-right $label'>$artikel[artikel_status]</span>
 

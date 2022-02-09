@@ -1,5 +1,7 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 ?>
 
@@ -30,17 +32,17 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
                      
                       <ul class="list-group">
 
-                        <li class="list-group-item" data-url='<?php echo base_url();?>' data-nama='Home' data-code='home'>Home <span class="tambahkan-ke-menu fa fa-sign-in" data-toggle='tooltip' data-placement='top' title='tambahkan ke menu'></span></li>
+                        <li class="list-group-item" data-url='<?php echo base_url(); ?>' data-nama='Home' data-code='home'>Home <span class="tambahkan-ke-menu fa fa-sign-in" data-toggle='tooltip' data-placement='top' title='tambahkan ke menu'></span></li>
 
-                        <li class="list-group-item" data-url='<?php echo base_url("privacy");?>' data-nama='Privacy' data-code='privacy'>Privacy <span class="tambahkan-ke-menu fa fa-sign-in" data-toggle='tooltip' data-placement='top' title='tambahkan ke menu'></span></li>
+                        <li class="list-group-item" data-url='<?php echo base_url('privacy'); ?>' data-nama='Privacy' data-code='privacy'>Privacy <span class="tambahkan-ke-menu fa fa-sign-in" data-toggle='tooltip' data-placement='top' title='tambahkan ke menu'></span></li>
 
-                        <li class="list-group-item" data-url='<?php echo base_url("syarat-dan-ketentuan");?>' data-nama='Syarat dan ketentuan' data-code='syarat-ketentuan'>Syarat dan ketentuan <span class="tambahkan-ke-menu fa fa-sign-in" data-toggle='tooltip' data-placement='top' title='tambahkan ke menu'></span></li>
+                        <li class="list-group-item" data-url='<?php echo base_url('syarat-dan-ketentuan'); ?>' data-nama='Syarat dan ketentuan' data-code='syarat-ketentuan'>Syarat dan ketentuan <span class="tambahkan-ke-menu fa fa-sign-in" data-toggle='tooltip' data-placement='top' title='tambahkan ke menu'></span></li>
 
-                        <li class="list-group-item" data-url='<?php echo base_url("disclaimer");?>' data-nama='Disclaimer' data-code='disclaimer'>Disclaimer<span class="tambahkan-ke-menu fa fa-sign-in" data-toggle='tooltip' data-placement='top' title='tambahkan ke menu'></span></li>
+                        <li class="list-group-item" data-url='<?php echo base_url('disclaimer'); ?>' data-nama='Disclaimer' data-code='disclaimer'>Disclaimer<span class="tambahkan-ke-menu fa fa-sign-in" data-toggle='tooltip' data-placement='top' title='tambahkan ke menu'></span></li>
 
-                        <li class="list-group-item" data-url='<?php echo base_url("about-us");?>' data-nama='About Us' data-code='about-us'>About Us<span class="tambahkan-ke-menu fa fa-sign-in" data-toggle='tooltip' data-placement='top' title='tambahkan ke menu'></span></li>
+                        <li class="list-group-item" data-url='<?php echo base_url('about-us'); ?>' data-nama='About Us' data-code='about-us'>About Us<span class="tambahkan-ke-menu fa fa-sign-in" data-toggle='tooltip' data-placement='top' title='tambahkan ke menu'></span></li>
 
-                        <li class="list-group-item" data-url='<?php echo base_url("faq");?>' data-nama='FAQ' data-code='faq'>FAQ<span class="tambahkan-ke-menu fa fa-sign-in" data-toggle='tooltip' data-placement='top' title='tambahkan ke menu'></span></li>
+                        <li class="list-group-item" data-url='<?php echo base_url('faq'); ?>' data-nama='FAQ' data-code='faq'>FAQ<span class="tambahkan-ke-menu fa fa-sign-in" data-toggle='tooltip' data-placement='top' title='tambahkan ke menu'></span></li>
 
 
                         <li class="list-group-item">Custom <span class="custom-menu fa fa-gear"></span>
@@ -61,10 +63,10 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
                              <div class="form-group">
                               <label><small>Target Link</small></label>
                               <select class="form-control" id="target-menu-custom">
-                               <?php 
-                                $_target=array("_self","_blank","_parent","_top");
-                                foreach($_target AS $d){
-                                  echo"<option value='$d'>$d</option>";
+                               <?php
+                                $_target = ['_self', '_blank', '_parent', '_top'];
+                                foreach ($_target as $d) {
+                                    echo"<option value='$d'>$d</option>";
                                 }
                                ?>
                               </select>
